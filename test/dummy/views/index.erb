@@ -1,0 +1,40 @@
+<% if @success && @image_title %>
+  <h1>Success!</h1>
+  <img src=<%= @image_title.url.inspect %> alt=<%= @image_title.text.inspect %>/>
+<% elsif @success === false %>
+  <h1>Failed.</h1>
+<% else %>
+  <h1>Has Image Title</h1>
+<% end %>
+
+<h2>Generate an image title!</h2>
+
+<form action="/" method="post">
+  <p>
+    <label for="text">Text:</label>
+    <input type="text" name="text" id="name"/>
+  </p>
+  <p>
+    <label for="options_font">Font:</label>
+    <select name="options[font]" id="options_font">
+      <option value="Cuprum.ttf">Cuprum</option>
+      <option value="HelveticaNeueLTStd-UltLt.otf">Helvetica Neue Ultra Light</option>
+      <option value="PermanentMarker.ttf">Permanent Marker</option>
+      
+    </select>
+  </p>
+  
+  <p>
+    <label for="options_color">Color:</label>
+    <select name="options[color]" id="options_color">
+      <option value="#ff0000">Red</option>
+      <option value="#0000ff">Blue</option>
+      <option value="#000000">Black</option>
+      <option value="#00ff00">Green</option>
+    </select>
+  </p>
+  
+  <p>
+    <input type="submit" value="generate"/>
+  </p>
+</form>

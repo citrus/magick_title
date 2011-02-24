@@ -1,0 +1,4 @@
+source "http://rubygems.org"
+
+gem "sinatra"
+gem "has_image_title", :path => File.expand_path("../../../", __FILE__)
