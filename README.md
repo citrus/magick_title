@@ -1,7 +1,7 @@
-HasImageTitle
-=============
+Has Image Title
+===============
 
-Want beautiful browser-compatible custom-smoothed & kerned fonts? HasImageTitle delivers just that. 
+Want beautiful browser-compatible custom-smoothed & kerned fonts? HasImageTitle delivers just that by using imagemagick to generate titles based on the options you provide.
 
 ** ----- under construction! ----- **
    
