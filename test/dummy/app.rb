@@ -10,7 +10,7 @@ get '/' do
 end
 
 post '/' do
-  @image_title = ImageTitle.new(params[:text], params[:options])
+  @image_title = Image.new(params[:text], params[:options])
   @success = @image_title.save
   erb :index  
 end

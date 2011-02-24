@@ -2,7 +2,7 @@ require 'fileutils' unless defined?(FileUtils)
 
 module MagickTitle
 
-  class ImageTitle
+  class Image
     
     # The hash of options used for building
     attr_accessor :text
@@ -22,9 +22,6 @@ module MagickTitle
     
     # Initializes a new image title with a string
     def initialize(text="", opts={})
-    
-      puts opts.inspect
-      
       update(text, opts)
       super
     end
@@ -34,11 +31,7 @@ module MagickTitle
     def update(text, opts={})
       @text = text
       return false unless valid?
-      
       @options = (@options || MagickTitle.options).merge(opts).symbolize_keys
-      
-      puts @options.inspect
-      
       @filename = unique_filename(@text)
       @path = options[:destination]
       @url = File.join(@path.sub('public/', ''), @filename)
@@ -51,13 +44,9 @@ module MagickTitle
       return false unless valid?
       FileUtils.mkdir_p(path)
       
-      puts "*" * 88
-      
-      puts run('convert', title_command_string)
+      run('convert', title_command_string)
       #info = run('identify', info_command_string)
 
-      puts "*" * 88
-      
       File.exists?(fullpath)
     end
     

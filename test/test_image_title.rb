@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestImageTitle < Test::Unit::TestCase
+class TestImage < Test::Unit::TestCase
 
   include MagickTitle
 
@@ -10,7 +10,7 @@ class TestImageTitle < Test::Unit::TestCase
   end
 
   should "not allow empty string" do
-    @title = ImageTitle.new("")
+    @title = Image.new("")
     assert !@title.valid?
     assert !@title.save
   end
@@ -18,7 +18,7 @@ class TestImageTitle < Test::Unit::TestCase
   context "a valid image title" do
     
     setup do
-      @title = ImageTitle.new("hello")
+      @title = Image.new("hello")
     end
     
     should "allow valid string" do

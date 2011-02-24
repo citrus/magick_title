@@ -43,7 +43,7 @@ module MagickTitle
       
       if key == :root 
         store(:font_path, File.join(value, "fonts"))
-        store(:destination, File.join(value, "system/titles"))
+        store(:destination, File.join(value, "pubic/system/titles"))
       end
       
       super(key, value)
