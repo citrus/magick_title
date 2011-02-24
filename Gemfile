@@ -1,4 +1,4 @@
 source "http://rubygems.org"
 
-# Specify your gem's dependencies in has_image_title.gemspec
+# Specify your gem's dependencies in magick_title.gemspec
 gemspec

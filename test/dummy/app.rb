@@ -1,7 +1,7 @@
 require 'bundler/setup'
 Bundler.require if defined?(Bundler)
 
-include HasImageTitle
+include MagickTitle
 
 use Rack::Static
 

@@ -2,11 +2,11 @@ require 'helper'
 
 class TestImageTitle < Test::Unit::TestCase
 
-  include HasImageTitle
+  include MagickTitle
 
   def setup
     # nothing!
-    HasImageTitle.options[:root] = File.expand_path("../dummy", __FILE__)
+    MagickTitle.options[:root] = File.expand_path("../dummy", __FILE__)
   end
 
   should "not allow empty string" do
