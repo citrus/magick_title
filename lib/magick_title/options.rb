@@ -1,4 +1,4 @@
-module HasImageTitle
+module MagickTitle
 
   class Options < Hash
   

@@ -1,6 +1,6 @@
 require 'fileutils' unless defined?(FileUtils)
 
-module HasImageTitle
+module MagickTitle
 
   class ImageTitle
     
@@ -35,7 +35,7 @@ module HasImageTitle
       @text = text
       return false unless valid?
       
-      @options = (@options || HasImageTitle.options).merge(opts).symbolize_keys
+      @options = (@options || MagickTitle.options).merge(opts).symbolize_keys
       
       puts @options.inspect
       
@@ -144,4 +144,4 @@ module HasImageTitle
           
   end # ImageTitle
   
-end # HasImageTitle
+end # MagickTitle

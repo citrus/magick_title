@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "has_image_title/version"
+require "magick_title/version"
 
 Gem::Specification.new do |s|
-  s.name        = "has_image_title"
-  s.version     = HasImageTitle::VERSION
+  s.name        = "magick_title"
+  s.version     = MagickTitle::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Spencer Steffen"]
   s.email       = ["spencer@citrusme.com"]
-  s.homepage    = "https://github.com/citrus/has_image_title"
+  s.homepage    = "https://github.com/citrus/magick_title"
   s.summary     = %q{}
   s.description = %q{}
 
-  s.rubyforge_project = "has_image_title"
+  s.rubyforge_project = "magick_title"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
