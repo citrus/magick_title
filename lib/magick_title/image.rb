@@ -33,7 +33,6 @@ module MagickTitle
     end
     
     
-    
     # Initializes a new image title with a string
     def initialize(text="", opts={})
       update(text, opts)
@@ -43,7 +42,7 @@ module MagickTitle
     # updates the image title to reflect new text and returns self
     def update(text, opts={})
       @text = text
-      return false unless valid?
+      return unless valid?
       
       # save the fullpath so we can delete it later
       @old_path = fullpath
@@ -56,11 +55,10 @@ module MagickTitle
     end
     
     
-    
     # Saves title and generates image
     def save
       # validate
-      return false unless valid?
+      return unless valid?
 
       # check for caching
       return true if options.cache && !dirty?

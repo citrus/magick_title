@@ -190,7 +190,5 @@ class TestImage < Test::Unit::TestCase
     end
     
   end
-  
-  
     
 end
