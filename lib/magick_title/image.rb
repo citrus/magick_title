@@ -68,11 +68,11 @@ module MagickTitle
       opts = { :parent => opts } if opts.is_a?(String)
       opts = MagickTitle.options[:to_html].merge(:alt => text, :src => url).merge(opts)
       parent = opts.delete(:parent)
-      tag = %(<img #{hash_to_attributes(opts)}/>)
+      tag = %(<img#{hash_to_attributes(opts)}/>)
       if parent
         ptag = parent.is_a?(String) ? parent : parent.is_a?(Hash) ? parent.delete(:tag) : nil
         ptag ||= "h1"
-        tag = %(<#{ptag} #{hash_to_attributes(parent)}>#{tag}</#{ptag}>)
+        tag = %(<#{ptag}#{hash_to_attributes(parent)}>#{tag}</#{ptag}>)
       end    
       tag
     end
@@ -81,9 +81,9 @@ module MagickTitle
     # Converts a hash to a string of html style key="value" pairs
     def hash_to_attributes(hash)
       attributes = []
-      return attributes unless hash.is_a?(Hash)
+      return "" unless hash.is_a?(Hash)
       hash.each { |key, value| attributes << %(#{key}="#{value}") if value and 0 < value.length }
-      attributes.join(" ").strip
+      " " + attributes.join(" ").strip
     end
     
     
@@ -128,7 +128,7 @@ module MagickTitle
         File.join(*path)
       end
       
-      # dev!
+      
       # Creates a filename token based on the title's options
       def filename_from_options
         digest = Digest::SHA1.hexdigest(title_command_string)
@@ -136,16 +136,10 @@ module MagickTitle
       end
       
       
-      
-      # converts the text to a useable filename
-      ## defaults to a random string if the filename is blank after replacing illegal chars
+      # Truncates if necessary and converts the text to a useable filename
       def fileize_text(text)
         text = text[0..31] if 32 < text.length
         file = text.to_s.downcase.gsub(/[^a-z0-9\s\-\_]/, '').strip.gsub(/[\s\-\_]+/, '_')
-        #unless 0 < file.length
-        #  o =  [('a'..'z'),('0'..'9')].map{|i| i.to_a}.flatten
-        #  file = (0..31).map{ o[rand(o.length)]  }.join
-        #end
         file
       end
       
@@ -161,7 +155,7 @@ module MagickTitle
           dupe = "#{file}_#{count}"
           exists = exists_in_destination? dupe
         end
-        "#{dupe || file}" # .#{options.extension}"
+        dupe || file
       end
       
       

@@ -28,7 +28,7 @@ module MagickTitle
     def defaults
       {
         :root => "./",
-        :font => "HelveticaNeueLTStd-UltLt.otf",
+        :font => "PermanentMarker.ttf",
         :font_path => Proc.new{ File.join MagickTitle.root, "fonts" },
         :font_size => 50,
         :destination => Proc.new{ File.join MagickTitle.root, "public/system/titles" },

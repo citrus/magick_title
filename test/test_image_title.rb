@@ -54,6 +54,12 @@ class TestImage < Test::Unit::TestCase
       assert_closing_tag html, tag
     end
     
+    should "use a different parent container" do
+      tag = "div"
+      html = @title.to_html(tag)
+      assert html.match(/<div></)
+    end
+    
     should "customize the parent html container" do
       tag = "div"
       html = @title.to_html(:parent => { :tag => tag, :id => "custom_id", :class => "some-class" })
