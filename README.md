@@ -10,25 +10,25 @@ Usage
 
 Using MagickTitle is easy:
 
-  MagickTitle.say("Hello!").to_html 
-  
-  # outputs
-  # <h1><img src="/system/titles/hello.png" alt="Bienvenida al mundo de 28 Buenos Días " class="magick-title"></h1>
+    MagickTitle.say("Hello!").to_html 
+    
+    # outputs
+    # <h1><img src="/system/titles/hello.png" alt="Bienvenida al mundo de 28 Buenos Días " class="magick-title"></h1>
 
 Without the h1 tag: 
   
-  MagickTitle.say("Hello!").to_html(false)
-  
-  # outputs
-  # <pre><img src="/system/titles/hello.png" alt="Bienvenida al mundo de 28 Buenos Días " class="magick-title"></pre>
+    MagickTitle.say("Hello!").to_html(false)
+    
+    # outputs
+    # <pre><img src="/system/titles/hello.png" alt="Bienvenida al mundo de 28 Buenos Días " class="magick-title"></pre>
 
 
 To just get an instance of MagickTitle::Image:
 
-  title = MagickTitle.say("Hello!")
-  
-  puts title.filename #=> "hello.png"
-  puts title.url #=> "/system/titles/hello.png"
+    title = MagickTitle.say("Hello!")
+    
+    puts title.filename #=> "hello.png"
+    puts title.url #=> "/system/titles/hello.png"
 
 
 More to come!
