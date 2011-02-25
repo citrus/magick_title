@@ -8,6 +8,7 @@ module MagickTitle
     attr_accessor :text
     
     # The hash of options used for building
+    # This hash is subclassed as Options and has some fancy features
     attr_accessor :options
     
     # File path to destination folder
@@ -31,10 +32,10 @@ module MagickTitle
     def update(text, opts={})
       @text = text
       return false unless valid?
-      @options = (@options || MagickTitle.options).merge(opts).symbolize_keys
+      @options = (@options || MagickTitle.options).merge(opts.symbolize_keys)
       @filename = unique_filename(@text)
-      @path = options[:destination]
-      @url = File.join(@path.sub('public/', ''), @filename)
+      @path = options.destination
+      @url = File.join((@path.match(/public(\/.*)/) || ['', './'])[1].to_s, @filename)
     end
     
     
@@ -43,10 +44,7 @@ module MagickTitle
     def save
       return false unless valid?
       FileUtils.mkdir_p(path)
-      
       run('convert', title_command_string)
-      #info = run('identify', info_command_string)
-
       File.exists?(fullpath)
     end
     
@@ -63,6 +61,11 @@ module MagickTitle
     end
     
     
+    def to_html(h1=true)
+      tag = %(<img src="#{url}" alt="#{text}" class="magick-title"/>)
+      tag = %(<h1 class="image-title">#{tag}</h1>) if h1
+      tag
+    end
     
     
     private
@@ -75,30 +78,32 @@ module MagickTitle
       
       # builds an imagemagick command based on the supplied options 
       def title_command_string
-        "-trim \
-        -antialias \
-        -background '#{options[:background_color]}#{options[:background_alpha]}' \
-        -fill '#{options[:color]}' \
-        -font #{options[:font_path]}/#{options[:font]} \
-        -pointsize #{options[:size]} \
-        -size #{options[:width]}x#{options[:height]} \
-        -weight #{options[:weight]} \
-        -kerning #{options[:kerning]} \
-        caption:'#{@text}' \
-        #{fullpath}"
+        %(
+          -trim
+          -antialias
+          -background '#{options.background_color}#{options.background_alpha}'
+          -fill '#{options.color}'
+          -font #{options.font_path}/#{options.font}
+          -pointsize #{options.font_size}
+          -size #{options.width}x#{options.height}
+          -weight #{options.weight}
+          -kerning #{options.kerning}
+          caption:'#{@text}'
+          #{fullpath}
+        ).gsub(/[\n\r\s]+/, ' ')
       end 
       
       # Cleans and runs the supplied command       
       # (stolen from paperclip)
       def run(cmd, params)
-        command = %Q<#{%Q[#{path_for_command(cmd)} #{params.to_s.gsub(/\\|\n|\r/, '')}].gsub(/\s+/, " ")}>
-        #logger.info command if options[:log_command]
+        command = [path_for_command(cmd), params.to_s.gsub(/\\|\n|\r/, '')].join(" ")
+        puts command if options.log_command
         `#{command}`
       end 
       
       # returns the `bin` path to the command
       def path_for_command(command)
-        path = [options[:command_path], command].compact
+        path = [options.command_path, command].compact
         File.join(*path)
       end
       
@@ -113,24 +118,25 @@ module MagickTitle
         file
       end
       
+      
       # creates a unique filename for the supplied text
       def unique_filename(text)
         file = fileize_text(text)
-        exists = exists_in_destination?(file)
+        exists = exists_in_destination? "#{file}.#{options.extension}"
         dupe, count = nil, 0
         while exists do
           count += 1
-          dupe = "#{file}_#{count}"
-          exists = exists_in_destination?(dupe)
+          dupe = "#{file}_#{count}.#{options.extension}"
+          exists = exists_in_destination? dupe
         end
-        "#{dupe || file}.#{options[:extension]}"
+        "#{dupe || file}.#{options.extension}"
       end
       
       # Checks if file exists in the destination option
       def exists_in_destination?(file)
-        File.exists?(File.join(options[:destination], file))
+        File.exists?(File.join(options.destination, file))
       end
           
-  end # ImageTitle
+  end # Image
   
 end # MagickTitle

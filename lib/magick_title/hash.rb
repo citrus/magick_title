@@ -1,4 +1,5 @@
 class Hash
+  # Stolen from rails 
   def symbolize_keys
     self.inject({}){|result, (key, value)|
       new_key = case key  

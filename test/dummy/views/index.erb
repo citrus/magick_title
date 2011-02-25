@@ -4,8 +4,10 @@
 <% elsif @success === false %>
   <h1>Failed.</h1>
 <% else %>
-  <h1>Magick Title</h1>
+  <%= MagickTitle.say("Hello!").to_html %>
+  <h2><%= MagickTitle.say("Welcome to MagickTitle!", :cache => false, :font => 'PermanentMarker.ttf', :font_size => 20, :color => '#999').to_html(false) %></h2>
 <% end %>
+
 
 <h2>Generate an image title!</h2>
 
