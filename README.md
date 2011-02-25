@@ -5,6 +5,35 @@ Want beautiful browser-compatible custom-smoothed & kerned fonts? Magick Title d
 
 ** ----- under construction! ----- **
    
+Usage
+-----
+
+Using MagickTitle is easy:
+
+  MagickTitle.say("Hello!").to_html 
+  
+  # outputs
+  # <h1><img src="/system/titles/hello.png" alt="Bienvenida al mundo de 28 Buenos Días " class="magick-title"></h1>
+
+Without the h1 tag: 
+  
+  MagickTitle.say("Hello!").to_html(false)
+  
+  # outputs
+  # <img src="/system/titles/hello.png" alt="Bienvenida al mundo de 28 Buenos Días " class="magick-title">
+
+
+To just get an instance of MagickTitle::Image:
+
+  title = MagickTitle.say("Hello!")
+  
+  puts title.filename #=> "hello.png"
+  puts title.url #=> "/system/titles/hello.png"
+
+
+More to come!
+
+   
 To Do
 -----
 

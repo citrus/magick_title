@@ -122,11 +122,11 @@ module MagickTitle
       # creates a unique filename for the supplied text
       def unique_filename(text)
         file = fileize_text(text)
-        exists = exists_in_destination? "#{file}.#{options.extension}"
+        exists = exists_in_destination? file
         dupe, count = nil, 0
         while exists do
           count += 1
-          dupe = "#{file}_#{count}.#{options.extension}"
+          dupe = "#{file}_#{count}"
           exists = exists_in_destination? dupe
         end
         "#{dupe || file}.#{options.extension}"
@@ -134,6 +134,7 @@ module MagickTitle
       
       # Checks if file exists in the destination option
       def exists_in_destination?(file)
+        file += options.extension unless file.match(/\.[a-z]{3,4}$/)
         File.exists?(File.join(options.destination, file))
       end
           
