@@ -61,10 +61,37 @@ module MagickTitle
     end
     
     
-    def to_html(h1=true)
-      tag = %(<img src="#{url}" alt="#{text}" class="magick-title"/>)
-      tag = %(<h1 class="image-title">#{tag}</h1>) if h1
+    
+    def to_html(opts={})
+      opts = { :parent => nil } if opts === false
+      opts = { 
+        :parent => {
+          :tag   => "h1",
+          :class => "image-title",
+          :id    => nil
+        },
+        :class => "magick-title",
+        :alt => text,
+        :src => url
+      }.merge(opts)
+      parent = opts.delete(:parent)
+      parent = { :tag => parent } if parent.is_a?(String)
+      tag = %(<img #{hash_to_attributes(opts)}/>)
+      if parent
+        ptag = parent.delete(:tag)
+        tag = %(<#{ptag} #{hash_to_attributes(parent)}>#{tag}</#{ptag}>)
+      end      
       tag
+    end
+    
+    def hash_to_attributes(hash)
+      attributes = ""
+      hash.each { |key, value| attributes << key.to_s << "=\"" << value << "\" " if value and 0 < value.length }
+      
+      puts "* 88"
+      puts attributes.inspect
+      
+      attributes
     end
     
     
