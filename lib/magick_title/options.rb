@@ -2,11 +2,13 @@ module MagickTitle
 
   class Options < Hash
   
+  
     # Initializes the options hash with the defaults
     def initialize
       super
       default!
     end
+    
     
     # Clears current options and resets to the defaults
     def default!
@@ -15,16 +17,17 @@ module MagickTitle
       merge! defaults
     end
 
+
     # A shortcut to [:root]
     def root
       @root ||= fetch(:root)
     end
     
+    
     # The default options hash
     def defaults
       {
         :root => "./",
-        :field_name => 'title',
         :font => "HelveticaNeueLTStd-UltLt.otf",
         :font_path => Proc.new{ File.join MagickTitle.root, "fonts" },
         :font_size => 50,
@@ -39,9 +42,17 @@ module MagickTitle
         :kerning => 0,
         :command_path => nil,
         :log_command => false,
-        :cache => true
+        :cache => true,
+        :to_html => {
+          :parent => {
+            :tag   => "h1",
+            :class => "image-title"
+          },
+          :class => "magick-title"
+        }
       }
     end
+    
     
     # Sets and option and converts its key to a symbol
     def []=(key, value)
@@ -50,14 +61,18 @@ module MagickTitle
       super(key, value)
     end
     
+    
     # Turns the key into a symbol and returns the requested value
     def [](key)
       val = fetch key.to_sym
       val.is_a?(Proc) ? val.call : val
     end
-            
-    # Retrieve a saved setting or return nil if it doesn't exist.
-    #
+    
+    
+    # Retrieve a saved setting by dynamically looking up its value in the hash.
+    # Call the value if it's a Proc and return nil if the key's value doesn't exist.
+    #   
+    #   Options[:foo] = "bar"
     #   Options.foo #=> "bar"
     #   Options.fuz #=> method missing error
     #

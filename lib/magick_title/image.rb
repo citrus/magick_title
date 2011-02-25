@@ -1,3 +1,4 @@
+require 'digest/sha1'
 require 'fileutils' unless defined?(FileUtils)
 
 module MagickTitle
@@ -33,7 +34,7 @@ module MagickTitle
       @text = text
       return false unless valid?
       @options = (@options || MagickTitle.options).merge(opts.symbolize_keys)
-      @filename = unique_filename(@text)
+      @filename = filename_from_options #unique_filename(@text)
       @path = options.destination
       @url = File.join((@path.match(/public(\/.*)/) || ['', './'])[1].to_s, @filename)
     end
@@ -44,7 +45,7 @@ module MagickTitle
     def save
       return false unless valid?
       FileUtils.mkdir_p(path)
-      run('convert', title_command_string)
+      run('convert', title_command_string(fullpath))
       File.exists?(fullpath)
     end
     
@@ -61,36 +62,28 @@ module MagickTitle
     end
     
     
-    
+    # Creates and HTML image tag with the options provided
     def to_html(opts={})
       opts = { :parent => nil } if opts === false
-      opts = { 
-        :parent => {
-          :tag   => "h1",
-          :class => "image-title"
-        },
-        :class => "magick-title",
-        :alt => text,
-        :src => url
-      }.merge(opts)
+      opts = { :parent => opts } if opts.is_a?(String)
+      opts = MagickTitle.options[:to_html].merge(:alt => text, :src => url).merge(opts)
       parent = opts.delete(:parent)
-      parent = { :tag => parent } if parent.is_a?(String)
       tag = %(<img #{hash_to_attributes(opts)}/>)
       if parent
-        ptag = parent.delete(:tag)
+        ptag = parent.is_a?(String) ? parent : parent.is_a?(Hash) ? parent.delete(:tag) : nil
+        ptag ||= "h1"
         tag = %(<#{ptag} #{hash_to_attributes(parent)}>#{tag}</#{ptag}>)
-      end      
+      end    
       tag
     end
     
+    
+    # Converts a hash to a string of html style key="value" pairs
     def hash_to_attributes(hash)
-      attributes = ""
-      hash.each { |key, value| attributes << key.to_s << "=\"" << value << "\" " if value and 0 < value.length }
-      
-      puts "* 88"
-      puts attributes.inspect
-      
-      attributes
+      attributes = []
+      return attributes unless hash.is_a?(Hash)
+      hash.each { |key, value| attributes << %(#{key}="#{value}") if value and 0 < value.length }
+      attributes.join(" ").strip
     end
     
     
@@ -103,7 +96,7 @@ module MagickTitle
       end
       
       # builds an imagemagick command based on the supplied options 
-      def title_command_string
+      def title_command_string(file="")
         %(
           -trim
           -antialias
@@ -115,9 +108,10 @@ module MagickTitle
           -weight #{options.weight}
           -kerning #{options.kerning}
           caption:'#{@text}'
-          #{fullpath}
+          #{file}
         ).gsub(/[\n\r\s]+/, ' ')
       end 
+      
       
       # Cleans and runs the supplied command       
       # (stolen from paperclip)
@@ -127,27 +121,39 @@ module MagickTitle
         `#{command}`
       end 
       
+      
       # returns the `bin` path to the command
       def path_for_command(command)
         path = [options.command_path, command].compact
         File.join(*path)
       end
       
+      # dev!
+      # Creates a filename token based on the title's options
+      def filename_from_options
+        digest = Digest::SHA1.hexdigest(title_command_string)
+        "#{unique_filename}_#{digest}.#{options.extension}"
+      end
+      
+      
+      
       # converts the text to a useable filename
-      # defaults to a random string if the filename is blank after replacing illegal chars
+      ## defaults to a random string if the filename is blank after replacing illegal chars
       def fileize_text(text)
+        text = text[0..31] if 32 < text.length
         file = text.to_s.downcase.gsub(/[^a-z0-9\s\-\_]/, '').strip.gsub(/[\s\-\_]+/, '_')
-        unless 0 < file.length
-          o =  [('a'..'z'),('0'..'9')].map{|i| i.to_a}.flatten
-          file = (0..31).map{ o[rand(o.length)]  }.join
-        end
+        #unless 0 < file.length
+        #  o =  [('a'..'z'),('0'..'9')].map{|i| i.to_a}.flatten
+        #  file = (0..31).map{ o[rand(o.length)]  }.join
+        #end
         file
       end
       
       
-      # creates a unique filename for the supplied text
-      def unique_filename(text)
-        file = fileize_text(text)
+      
+      # creates a unique filename for the title's text
+      def unique_filename
+        file = fileize_text(@text)
         exists = exists_in_destination? file
         dupe, count = nil, 0
         while exists do
@@ -155,12 +161,13 @@ module MagickTitle
           dupe = "#{file}_#{count}"
           exists = exists_in_destination? dupe
         end
-        "#{dupe || file}.#{options.extension}"
+        "#{dupe || file}" # .#{options.extension}"
       end
+      
       
       # Checks if file exists in the destination option
       def exists_in_destination?(file)
-        file += options.extension unless file.match(/\.[a-z]{3,4}$/)
+        file = [file, options.extension].join(".") unless file.match(/\.[a-z]{3,4}$/)
         File.exists?(File.join(options.destination, file))
       end
           
