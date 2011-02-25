@@ -14,5 +14,5 @@ end
 post '/' do
   @image_title = MagickTitle::Image.new(params[:text], params[:options])
   @success = @image_title.save
-  erb :index  
+  erb :index
 end
