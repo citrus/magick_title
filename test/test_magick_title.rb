@@ -1,34 +1,14 @@
 require 'helper'
 
-class TestImage < Test::Unit::TestCase
+class TestMagickTitle < Test::Unit::TestCase
 
-  def setup
-    MagickTitle.options[:root] = File.expand_path("../dummy", __FILE__)
-  end
-  
-
-  should "not allow empty string" do
-    @title = MagickTitle::Image.new("")
-    assert !@title.valid?
-    assert !@title.save
-  end
-  
-  
-  context "a valid image title" do
+  should "create an instance of MagickTitle::Image" do
     
-    setup do
-      @title = MagickTitle::Image.new("hello")
-    end
+    @title = MagickTitle.say("Hello Magick Title!")
     
-    should "allow valid string" do
-      assert @title.valid?
-    end
+    assert @title.is_a?(MagickTitle::Image)
+    assert File.exists?(@title.fullpath)
     
-    should "save a valid title" do
-      assert @title.save
-      assert File.exists?(@title.fullpath)
-    end
-        
   end
   
 end

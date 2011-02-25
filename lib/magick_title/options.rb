@@ -33,6 +33,7 @@ module MagickTitle
         :font_size => 50,
         :destination => Proc.new{ File.join MagickTitle.root, "public/system/titles" },
         :extension => "png",
+        :text_transform => nil,
         :width => 800,
         :height => nil,
         :background_color => '#ffffff',

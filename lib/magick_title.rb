@@ -30,10 +30,8 @@ module MagickTitle
   #   MagickTitle.image("Hello!")
   #   MagickTitle.say("Hi", :refresh => true)
   #
-  def image(text, opts={})
-    title = ::MagickTitle::Image.new(text, opts)
-    title.save unless title.options.cache && File.exists?(title.fullpath)
-    title
+  def image(*args)
+    MagickTitle::Image.create(*args)
   end
   alias :say :image
   

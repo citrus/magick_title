@@ -1,5 +1,4 @@
 require 'digest/sha1'
-require 'fileutils' unless defined?(FileUtils)
 
 module MagickTitle
 
@@ -22,30 +21,64 @@ module MagickTitle
     attr_reader :url
     
     
+    # Creates an instance of MagickTitle::Image
+    #
+    #   MagickTitle::Image.create("text")
+    #   MagickTitle::Image.create("large", :font_size => 60)
+    #
+    def self.create(*args)
+      title = new(*args)
+      return unless title.save
+      title
+    end
+    
+    
+    
     # Initializes a new image title with a string
     def initialize(text="", opts={})
       update(text, opts)
     end
     
     
-    # updates the image title to reflect new text
+    # updates the image title to reflect new text and returns self
     def update(text, opts={})
       @text = text
       return false unless valid?
+      
+      # save the fullpath so we can delete it later
+      @old_path = fullpath
+      
       @options = (@options || MagickTitle.options).merge(opts.symbolize_keys)
       @filename = filename_from_options #unique_filename(@text)
       @path = options.destination
       @url = File.join((@path.match(/public(\/.*)/) || ['', './'])[1].to_s, @filename)
+      self
     end
     
     
     
-    # saves title and generates image
+    # Saves title and generates image
     def save
+      # validate
       return false unless valid?
+
+      # check for caching
+      return true if options.cache && !dirty?
+      
+      # delete if an old title exists
+      delete(@old_path)
+      
+      # delete current image
+      delete(fullpath)
+      
       FileUtils.mkdir_p(path)
       run('convert', title_command_string(fullpath))
       File.exists?(fullpath)
+    end
+    
+    # Deletes the specified image
+    def delete(file=fullpath)
+      FileUtils.rm(file) if file && File.exists?(file)
     end
     
     
@@ -55,8 +88,21 @@ module MagickTitle
     end
     
     
+    # Checks if the image title needs to be saved
+    def dirty?
+      !exists? || (@old_path && @old_path != fullpath)
+    end
+    
+    # Checks if the specified file exists
+    def exists?(file=fullpath)
+      return unless file
+      file = [file, options.extension].join(".") unless file.match(/\.[a-z]{3,4}$/)
+      File.exists?(file)
+    end
+    
     # Returns the full path to the file
     def fullpath
+      return unless path && filename
       File.join(path, filename)
     end
     
@@ -147,22 +193,16 @@ module MagickTitle
       # creates a unique filename for the title's text
       def unique_filename
         file = fileize_text(@text)
-        exists = exists_in_destination? file
+        exists = exists? file
         dupe, count = nil, 0
         while exists do
           count += 1
           dupe = "#{file}_#{count}"
-          exists = exists_in_destination? dupe
+          exists = exists? dupe
         end
         dupe || file
       end
       
-      
-      # Checks if file exists in the destination option
-      def exists_in_destination?(file)
-        file = [file, options.extension].join(".") unless file.match(/\.[a-z]{3,4}$/)
-        File.exists?(File.join(options.destination, file))
-      end
           
   end # Image
   
