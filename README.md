@@ -37,6 +37,7 @@ More to come!
 To Do
 -----
 
+* Better filenames so the same text can have multiple images
 * Write tests
 * Write documentation
 * Auto ActiveRecord integration (this will be a seperate HasImage gem)

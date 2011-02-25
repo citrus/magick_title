@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Spencer Steffen"]
   s.email       = ["spencer@citrusme.com"]
   s.homepage    = "https://github.com/citrus/magick_title"
-  s.summary     = %q{}
-  s.description = %q{}
+  s.summary     = %q{Converts text to an image using imagemagick.}
+  s.description = %q{Want beautiful browser-compatible custom-smoothed & kerned fonts? Magick Title delivers just that by using imagemagick to generate titles based on the options you provide.}
 
   s.rubyforge_project = "magick_title"
 

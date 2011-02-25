@@ -67,8 +67,7 @@ module MagickTitle
       opts = { 
         :parent => {
           :tag   => "h1",
-          :class => "image-title",
-          :id    => nil
+          :class => "image-title"
         },
         :class => "magick-title",
         :alt => text,
