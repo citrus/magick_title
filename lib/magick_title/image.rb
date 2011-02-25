@@ -25,7 +25,6 @@ module MagickTitle
     # Initializes a new image title with a string
     def initialize(text="", opts={})
       update(text, opts)
-      super
     end
     
     

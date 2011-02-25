@@ -6,6 +6,13 @@ Want beautiful copyright-protected browser-compatible custom-smoothed & kerned f
 ** ----- under construction, but getting closer! ----- **
    
 
+Requirements
+------------
+
+MagickTitle is framework agnostic but requires imagemagick built with freetype.
+
+
+
 Usage
 -----
 
@@ -96,7 +103,7 @@ Combine no-parent with custom attributes:
 
     
     
-## More to come!
+### More to come!
 
 
    

@@ -1,9 +1,7 @@
 require 'bundler/setup'
 Bundler.require if defined?(Bundler)
 
-
 MagickTitle.options = { :font_size => 56 }
-
 
 use Rack::Static
 

@@ -1,4 +1,6 @@
 source "http://rubygems.org"
 
 gem "sinatra"
-gem "magick_title", :path => File.expand_path("../../../", __FILE__)
+gem "magick_title", "0.1.2"
+
+#:path => File.expand_path("../../../", __FILE__)

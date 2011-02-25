@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email       = ["spencer@citrusme.com"]
   s.homepage    = "https://github.com/citrus/magick_title"
   s.summary     = %q{Converts text to an image using imagemagick.}
-  s.description = %q{Want beautiful browser-compatible custom-smoothed & kerned fonts? Magick Title delivers just that by using imagemagick to generate titles based on the options you provide.}
+  s.description = %q{Want beautiful copyright-protected browser-compatible custom-smoothed & kerned fonts? Magick Title delivers just that by using imagemagick to generate titles based on the options you provide.}
 
   s.rubyforge_project = "magick_title"
 
@@ -22,5 +22,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'shoulda', '2.11.3'
   s.add_development_dependency 'rack-test', '0.5.7'
   s.add_development_dependency 'sinatra', '1.1.0'
-  
 end
