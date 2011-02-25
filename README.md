@@ -20,7 +20,7 @@ Without the h1 tag:
     MagickTitle.say("Hello!").to_html(false)
     
     # outputs
-    # <pre><img src="/system/titles/hello.png" alt="Bienvenida al mundo de 28 Buenos Días " class="magick-title"></pre>
+    # <img src="/system/titles/hello.png" alt="Bienvenida al mundo de 28 Buenos Días " class="magick-title">
 
 
 To just get an instance of MagickTitle::Image:
