@@ -12,6 +12,20 @@ Requirements
 MagickTitle is framework agnostic but requires imagemagick built with freetype.
 
 
+Installation
+------------
+
+As usual, just use the `gem install command
+
+    (sudo) gem install magick_title
+    
+Or add magick_title as a gem in your Gemfile
+
+    gem 'magick_title', '>= 0.1.4' 
+
+Then run `bundle install`
+
+
 
 Usage
 -----
@@ -114,6 +128,7 @@ To Do
 * Smart option validation (:color => 'fff' converts to :color => '#fff' and :color => 'pink' fails)
 * More documentation
 * Auto ActiveRecord integration (`has_magick_title` class method)
+* Tempfiles and base64
 * Clean up and publish demo app
 
 
