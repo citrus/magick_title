@@ -3,7 +3,7 @@ Magick Title
 
 Want beautiful copyright-protected browser-compatible custom-smoothed & kerned fonts? MagickTitle delivers just that by using imagemagick to generate titles based on the options you provide.
 
-** ----- under construction, but getting closer! ----- **
+** ----- in beta! ----- **
    
 
 Requirements
@@ -21,7 +21,7 @@ As usual, just use the `gem install command
     
 Or add magick_title as a gem in your Gemfile
 
-    gem 'magick_title', '>= 0.1.4' 
+    gem 'magick_title', '>= 0.1.5' 
 
 Then run `bundle install`
 
