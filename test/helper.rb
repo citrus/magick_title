@@ -1,10 +1,11 @@
 ENV["environment"] = "test"
 
 require 'test/unit'
-#require 'rack/test'
 require 'shoulda'
 require 'magick_title'
-require 'fileutils'
+
+#require 'rack/test'
+#require 'fileutils'
 
 class Test::Unit::TestCase
 
