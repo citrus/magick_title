@@ -16,6 +16,7 @@
     <label for="text">Text:</label><br/>
     <textarea name="text" id="name" rows="5" cols="50"><%= params[:text] %></textarea>
   </p>
+  
   <p>
     <label for="options_font">Font:</label>
     <select name="options[font]" id="options_font">
@@ -25,42 +26,159 @@
     </select>
   </p>
   
-  <p>
-    <label for="options_color">Color:</label>
-    <select name="options[color]" id="options_color">
-      <option value="#ff0000">Red</option>
-      <option value="#0000ff">Blue</option>
-      <option value="#00ff00">Green</option>
-      <option value="#000000">Black</option>
-      <option value="#aaaaaa">Gray</option>
-    </select>
-  </p>
   
-  <p>
-    <label for="options_font_size">Font Size:</label>
-    <select name="options[font_size]" id="options_font_size">
-      <option value="15">15</option>
-      <option value="25">25</option>
-      <option value="40" selected="selected">40</option>
-      <option value="100">100</option>
-      <option value="200">200</option>
-    </select>
-  </p>
+  <div class="option">
+    <p>Width: <em><span id="value_width">400</span> pixels</em></p>
+    <div id="slider_width"></div>
+    <input type="hidden" name="options[width]" id="options_width" value="400" />
+  </div>
   
-  <p>
-    <label for="options_kerning">Kerning:</label>
-    <select name="options[kerning]" id="options_kerning">
-      <option value="-10">-10</option>
-      <option value="-5">-5</option>
-      <option value="-2">-2</option>
-      <option value="0" selected="selected">0</option>
-      <option value="2">2</option>
-      <option value="5">5</option>
-      <option value="10">10</option>
-    </select>
-  </p>
+  <div class="option">
+    <p>Font Size: <em><span id="value_font_size">30</span> pixels</em></p>
+    <div id="slider_font_size"></div>
+    <input type="hidden" name="options[font_size]" id="options_font_size" value="30" />
+  </div>
   
-  <p>
+  <div class="option">
+    <p>Kerning: <em><span id="value_kerning">0</span></em></p>
+    <div id="slider_kerning"></div>
+    <input type="hidden" name="options[kerning]" id="options_kerning" value="0" />
+  </div>
+  
+  
+  
+  <div class="option">
+    <p>Color: <input type="text" name="options[color]" id="options_color" /></p>
+    
+    <div id="red"></div>
+    <div id="green"></div>
+    <div id="blue"></div>
+
+    <div id="swatch" class="ui-widget-content ui-corner-all"></div>
+    
+
+    <br class="clear"/>
+    
+  </div>
+  
+	
+	
+	
+	
+	
+	
+	<p>
     <input type="submit" value="generate"/>
   </p>
 </form>
+
+<script type="text/javascript">
+//<![CDATA[
+
+
+
+  function rgbToHex(r, g, b) {
+		var hex = [
+			r.toString( 16 ),
+			g.toString( 16 ),
+			b.toString( 16 )
+		];
+		$.each( hex, function( nr, val ) {
+			if ( val.length === 1 ) {
+				hex[ nr ] = "0" + val;
+			}
+		});
+		return hex.join("").toUpperCase();
+  }
+  
+  function hexToRgb(hex) {
+    hex = hex.replace(/^#?/, '');
+    if (hex.length == 3) hex = hex + hex;
+    var r = parseInt(hex.substring(0,2), 16),
+        g = parseInt(hex.substring(2,4), 16),
+        b = parseInt(hex.substring(4,6), 16);
+    return [r, g, b];
+  }
+
+	
+	function refreshSwatch() {
+		var red = $("#red").slider("value"),
+			green = $("#green").slider("value"),
+			 blue = $("#blue").slider("value"),
+			  hex = "#" + rgbToHex(red, green, blue);
+		$("#swatch").css("background-color", hex);
+		return hex;
+	}
+	
+  $( "#red, #green, #blue" ).slider({
+    orientation: "horizontal",
+    range: "min",
+    max: 255,
+    value: 127,
+    slide: function() {
+      $("#options_color").val(refreshSwatch());
+    },
+    change: refreshSwatch
+  });
+
+  $("#options_color").val(refreshSwatch());
+  
+  
+  $("#options_color").change(function(evt) {
+    var key = this.value.split("").pop();
+    console.log(key);
+    if (key && !key.match(/[#A-Fa-f0-9]/)) {
+      console.log('INVALID KEY');
+    }
+  });
+  $("#options_color").keyup(function() {
+    val = $(this).val();
+    // match either 3 or 6 digit hexdecimals
+    if (val.match(/^#?(([A-Fa-f0-9]{3})|(([A-Fa-f0-9]{2}){3}))$/)) {
+      var rgb = hexToRgb(val);
+      $("#red").slider("value",   rgb[0]);
+      $("#green").slider("value", rgb[1]);
+      $("#blue").slider("value",  rgb[2]);
+    }
+  });
+
+  
+
+
+
+
+
+
+	$("#slider_width").slider({
+	  value: 400,
+    min: 100,
+		max: 700,
+		slide: function( event, ui ) {
+		  $("#value_width").text(ui.value);
+		  $("#options_width").val(ui.value);
+		}
+	});
+
+	$("#slider_font_size").slider({
+	  value: 30,
+    min: 10,
+		max: 100,
+		slide: function( event, ui ) {
+		  $("#value_font_size").text(ui.value);
+		  $("#options_font_size").val(ui.value);
+		}
+	});
+	
+	$("#slider_kerning").slider({
+	  value: 0,
+    min: -50,
+		max: 50,
+		slide: function( event, ui ) {
+		  $("#value_kerning").text(ui.value);
+		  $("#options_kerning").val(ui.value);
+		}
+	});
+	
+   
+//]]>
+</script>

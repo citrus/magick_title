@@ -1,0 +1,62 @@
+@import url('eggplant/jquery-ui-1.8.10.custom.css');
+
+body {
+  font-family: "HelveticaNeue", Helvetica, Arial, sans-serif;
+  color: #080603;
+}
+a {
+  text-decoration: none;
+  color: #68962c;
+}
+
+.clear { clear: both; }
+
+.container {
+  width: 500px;
+  margin: 0 auto;
+}
+.header {
+  border-bottom: 1px solid #ddd;
+}
+.header a {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #eee;
+}
+
+.flash {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+.flash.notice {
+  color: #68962c;
+}
+.flash.error {
+  color: #c00e0e;
+}
+
+
+
+
+
+#red, #green, #blue {
+  float: left;
+  clear: left;
+  width: 300px;
+  margin-bottom: 10px;
+}
+#swatch {
+  width: 120px;
+  height: 100px;
+  margin-top: 18px;
+  margin-left: 350px;
+  background-image: none;
+}
+#red   .ui-slider-range { background: #ff0000; }
+#red   .ui-state-default { border-color: #aa0000; background: #ff0000; }
+
+#green .ui-slider-range { background: #00ff00; }
+#green .ui-state-default { border-color: #00aa00; background: #00ff00; }
+
+#blue  .ui-slider-range { background: #0000ff; }
+#blue  .ui-state-default { border-color: #0000aa; background: #0000ff; }
