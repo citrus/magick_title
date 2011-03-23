@@ -125,6 +125,8 @@ To Do
 -----
 
 * Write more tests
+* Write DSL for options
+* Support for multiple preset styles (`MagickTitle.say("Hello!", :subtitle)` or `MagickTitle.say("Hello!", :sidebar_title)`)
 * Smart option validation (:color => 'fff' converts to :color => '#fff' and :color => 'pink' fails)
 * More documentation
 * Auto ActiveRecord integration (`has_magick_title` class method)
