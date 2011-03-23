@@ -1,11 +1,9 @@
 ENV["environment"] = "test"
 
-require 'test/unit'
+require 'bundler/setup'
+Bundler.require(:default, :test)
 require 'shoulda'
-require 'magick_title'
 
-#require 'rack/test'
-#require 'fileutils'
 
 class Test::Unit::TestCase
 

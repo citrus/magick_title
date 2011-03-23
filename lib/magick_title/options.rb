@@ -78,9 +78,18 @@ module MagickTitle
     #   Options.fuz #=> method missing error
     #
     def method_missing(method, *args, &block)
-      key = method.to_sym
-      val = fetch(key) # if has_key? key
-      val.nil? ? nil : val.is_a?(Proc) ? val.call : val
+    
+      raise NoMethodError if method == :to_ary && RUBY_VERSION =~ /^1\.9/
+    
+      puts args.inspect
+      if args.empty?
+        key = method.to_sym
+        val = fetch(key) # if has_key? key
+        val.nil? ? nil : val.is_a?(Proc) ? val.call : val
+      else
+        puts method.inspect  
+      end
+          
     end
     
   end

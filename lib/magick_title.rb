@@ -6,6 +6,16 @@ module MagickTitle
 
   extend self
   
+  def style(name, &block)
+    
+    opts = Options.new
+    opts.instance_eval(&block)    
+    styles[:name] = opts
+    
+  end
+  
+  
+  
   # A shortcut to options[:root]
   def root
     options.root
@@ -15,6 +25,13 @@ module MagickTitle
   def options
     @options ||= Options.new
   end
+  
+  
+  # Returns the styles hash
+  def styles
+    @styles ||= {}
+  end
+  
   
   # Sets the options hash
   def options=(value)
