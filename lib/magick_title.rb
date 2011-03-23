@@ -6,15 +6,12 @@ module MagickTitle
 
   extend self
   
+  # Creates a new options instance as a style
   def style(name, &block)
-    
     opts = Options.new
     opts.instance_eval(&block)    
-    styles[:name] = opts
-    
+    styles[name.to_sym] = opts
   end
-  
-  
   
   # A shortcut to options[:root]
   def root

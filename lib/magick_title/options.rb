@@ -81,13 +81,12 @@ module MagickTitle
     
       raise NoMethodError if method == :to_ary && RUBY_VERSION =~ /^1\.9/
     
-      puts args.inspect
       if args.empty?
         key = method.to_sym
         val = fetch(key) # if has_key? key
         val.nil? ? nil : val.is_a?(Proc) ? val.call : val
       else
-        puts method.inspect  
+        store(method.to_sym, args[0])
       end
           
     end

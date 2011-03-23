@@ -48,7 +48,12 @@ module MagickTitle
       # save the fullpath so we can delete it later
       @old_path = fullpath
       
-      @options = (@options || MagickTitle.options).merge(opts.symbolize_keys)
+      if opts.is_a? Hash
+        @options = (@options || MagickTitle.options).merge(opts.symbolize_keys)
+      elsif opts.is_a? Symbol
+        @options = MagickTitle.styles[opts]
+      end
+      
       @filename = filename_from_options #unique_filename(@text)
       @path = options.destination
       @url = File.join((@path.match(/public(\/.*)/) || ['', './'])[1].to_s, @filename)
