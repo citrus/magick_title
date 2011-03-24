@@ -34,6 +34,19 @@
   </div>
   
   <div class="option">
+    <p>Height: <em><span id="value_height">50 pixels</span></em></p>
+    
+    <p>
+      <input type="checkbox" id="auto_height" name="auto_height" />
+      <label for="auto_height">Trim to minimum height</label>
+    </p>
+    
+    <div id="slider_height"></div>
+    <input type="hidden" name="options[height]" id="options_height" value="50" />
+   
+  </div>
+  
+  <div class="option">
     <p>Font Size: <em><span id="value_font_size">30</span> pixels</em></p>
     <div id="slider_font_size"></div>
     <input type="hidden" name="options[font_size]" id="options_font_size" value="30" />
@@ -121,17 +134,14 @@
     change: refreshSwatch
   });
 
-  $("#options_color").val(refreshSwatch());
-  
-  
-  $("#options_color").change(function(evt) {
+
+  $("#options_color").val(refreshSwatch()).change(function(evt) {
     var key = this.value.split("").pop();
     console.log(key);
     if (key && !key.match(/[#A-Fa-f0-9]/)) {
       console.log('INVALID KEY');
     }
-  });
-  $("#options_color").keyup(function() {
+  }).keyup(function() {
     val = $(this).val();
     // match either 3 or 6 digit hexdecimals
     if (val.match(/^#?(([A-Fa-f0-9]{3})|(([A-Fa-f0-9]{2}){3}))$/)) {
@@ -156,6 +166,32 @@
 		slide: function( event, ui ) {
 		  $("#value_width").text(ui.value);
 		  $("#options_width").val(ui.value);
+		}
+	});
+
+  $("#auto_height").change(function(evt) {
+    
+    $("#slider_height").toggle(!this.checked);
+    
+    if (this.checked) {
+      $("#value_height").text("auto");
+  	 	$("#options_height").val("");
+    } else {
+      var val = $("#slider_height").slider('value');
+		  $("#value_height").text(val);
+    }
+		
+  }).change(); 
+  
+  
+
+	$("#slider_height").slider({
+	  value: 50,
+    min: 20,
+		max: 100,
+		slide: function( event, ui ) {
+		  $("#value_height").text(ui.value + ' pixels');
+		  $("#options_height").val(ui.value);
 		}
 	});
 

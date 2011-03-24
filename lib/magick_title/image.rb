@@ -115,7 +115,7 @@ module MagickTitle
     def to_html(opts={})
       opts = { :parent => nil } if opts === false
       opts = { :parent => opts } if opts.is_a?(String)
-      opts = MagickTitle.options[:to_html].merge(:alt => text, :src => url).merge(opts)
+      opts = options[:to_html].merge(:alt => text, :src => url).merge(opts)
       parent = opts.delete(:parent)
       tag = %(<img#{hash_to_attributes(opts)}/>)
       if parent
@@ -147,7 +147,7 @@ module MagickTitle
       # builds an imagemagick command based on the supplied options 
       def title_command_string(file="")
         %(
-          -trim
+          #{'-trim ' unless 0 < options.height.to_i}
           -antialias
           -background '#{options.background_color}#{options.background_alpha}'
           -fill '#{options.color}'

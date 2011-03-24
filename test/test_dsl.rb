@@ -6,7 +6,7 @@ class TestDsl < Test::Unit::TestCase
     
     MagickTitle.style :h1 do
       font      "PermanentMarker.ttf"
-      font_size 40
+      font_size 50
       width     200
     end
     
@@ -21,8 +21,8 @@ class TestDsl < Test::Unit::TestCase
     
     MagickTitle.style :h2 do
       font      "Lobster.ttf"
-      font_size 50
-      color     "#ff0000"
+      font_size 30
+      color     "#cc0000"
       to_html   :parent => { :tag => "div" }
     end
     

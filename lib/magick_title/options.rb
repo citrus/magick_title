@@ -58,15 +58,21 @@ module MagickTitle
     # Sets and option and converts its key to a symbol
     def []=(key, value)
       key = key.to_sym
-      raise ArgumentError, "MagickTitle::InvalidOption: #{key} is not an available option." unless defaults.keys.include?(key)      
-      super(key, value)
+      store(key, value)
     end
     
     
     # Turns the key into a symbol and returns the requested value
     def [](key)
-      val = fetch key.to_sym
+      val = fetch(key.to_sym)
       val.is_a?(Proc) ? val.call : val
+    end
+    
+    # Checks if the option is valid before storing
+    def store(key, value)      
+      puts "Storing: #{key} = #{value.inspect}" 
+      raise NoMethodError, "MagickTitle::InvalidOption: #{key} is not an available option." unless defaults.keys.include?(key)
+      super(key, value)
     end
     
     
@@ -83,9 +89,11 @@ module MagickTitle
     
       if args.empty?
         key = method.to_sym
-        val = fetch(key) # if has_key? key
+        val = fetch(key)
         val.nil? ? nil : val.is_a?(Proc) ? val.call : val
       else
+        #puts "Storing: #{method}"
+        #puts args[0]
         store(method.to_sym, args[0])
       end
           

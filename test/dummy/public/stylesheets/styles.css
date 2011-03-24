@@ -36,7 +36,11 @@ a {
 }
 
 
-
+.option {
+  margin: 1em 0 1em 0;
+  padding-bottom: 1em;
+  border-bottom: 1px solid #eee;
+}
 
 
 #red, #green, #blue {
