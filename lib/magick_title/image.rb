@@ -88,7 +88,7 @@ module MagickTitle
     
     # Checks if the image title is valid
     def valid?
-      1 < @text.strip.length
+      0 < @text.strip.length
     end
     
     

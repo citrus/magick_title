@@ -1,7 +1,7 @@
 Magick Title
 ============
 
-Want beautiful copyright-protected browser-compatible custom-smoothed & kerned fonts? MagickTitle delivers just that by using imagemagick to generate titles based on the options you provide.
+Want beautiful copyright-protected browser-compatible custom-smoothed & kerned fonts? MagickTitle delivers just that by using [imagemagick](http://www.imagemagick.org/script/index.php) to generate titles based on the options you provide.
 
 ** ----- in beta! ----- **
    
@@ -9,19 +9,19 @@ Want beautiful copyright-protected browser-compatible custom-smoothed & kerned f
 Requirements
 ------------
 
-MagickTitle is framework agnostic but requires imagemagick built with freetype.
+MagickTitle is framework agnostic but requires [imagemagick](http://www.imagemagick.org/script/index.php) built with [freetype](http://www.freetype.org/).
 
 
 Installation
 ------------
 
-As usual, just use the `gem install command
+As usual, just use the `gem install` command:
 
     (sudo) gem install magick_title
     
-Or add magick_title as a gem in your Gemfile
+Or add magick_title as a gem in your Gemfile:
 
-    gem 'magick_title', '>= 0.1.5' 
+    gem 'magick_title', '>= 0.1.6' 
 
 Then run `bundle install`
 
@@ -125,12 +125,12 @@ To Do
 -----
 
 * Write more tests
-* Write DSL for options
-* Support for multiple preset styles (`MagickTitle.say("Hello!", :subtitle)` or `MagickTitle.say("Hello!", :sidebar_title)`)
+* Write DSL for options (in progress)
+* Support for multiple preset styles (`MagickTitle.say("Hello!", :subtitle)` or `MagickTitle.say("Hello!", :sidebar_title)`) (in progress)
 * Smart option validation (:color => 'fff' converts to :color => '#fff' and :color => 'pink' fails)
 * More documentation
 * Auto ActiveRecord integration (`has_magick_title` class method)
-* Tempfiles and base64
+* Heroku support / tempfiles / base64
 * Clean up and publish demo app
 
 
