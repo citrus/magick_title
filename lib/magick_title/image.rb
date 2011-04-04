@@ -151,10 +151,14 @@ module MagickTitle
           -size #{options.width}x#{options.height}
           -weight #{options.weight}
           -kerning #{options.kerning}
-          caption:'#{@text.escape_single_quotes}'
+          caption:'#{escape_for_convert(@text)}'
           #{file}
         ).gsub(/[\n\r\s]+/, ' ')
       end 
+      
+      def escape_for_convert(string)
+        string.gsub(/('|")/, "\\#{$1}")
+      end
       
             
       # Cleans and runs the supplied command       
