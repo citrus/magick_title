@@ -151,12 +151,12 @@ module MagickTitle
           -size #{options.width}x#{options.height}
           -weight #{options.weight}
           -kerning #{options.kerning}
-          caption:'#{@text}'
+          caption:'#{@text.escape_single_quotes}'
           #{file}
         ).gsub(/[\n\r\s]+/, ' ')
       end 
       
-      
+            
       # Cleans and runs the supplied command       
       # (stolen from paperclip)
       def run(cmd, params)
@@ -164,6 +164,7 @@ module MagickTitle
         puts command if options.log_command
         `#{command}`
       end 
+      
       
       
       # returns the `bin` path to the command

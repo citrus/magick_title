@@ -199,4 +199,25 @@ class TestImage < Test::Unit::TestCase
     
   end
     
+  context "a title with quotes" do
+  
+    should "allow single quotes" do
+      @title = MagickTitle::Image.create("It's pretty nifty")
+    end
+    
+    should "allow double quotes" do
+      @title = MagickTitle::Image.create('Then he said; "Ruby rocks"')
+    end
+    
+    should "allow mixed quotes" do
+      @title = MagickTitle::Image.create(%("Ruby rocks" - it's what she said))
+    end
+    
+    teardown do
+      assert @title.valid?
+      assert @title.save      
+    end
+    
+  end
+    
 end
