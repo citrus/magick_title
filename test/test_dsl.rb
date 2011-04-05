@@ -11,8 +11,8 @@ class TestDsl < Test::Unit::TestCase
     end
     
     assert MagickTitle.styles.include?(:h1)
-    assert_equal 50, MagickTitle.styles[:h2][:font_size]
-    assert_equal 200, MagickTitle.styles[:h2][:width]
+    assert_equal 50, MagickTitle.styles[:h1][:font_size]
+    assert_equal 200, MagickTitle.styles[:h1][:width]
 
   end
   
