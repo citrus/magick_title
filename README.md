@@ -30,7 +30,13 @@ Then run `bundle install`
 Usage
 -----
 
-Using MagickTitle is easy. First, customize your global title styles by setting MagickTitle's default options while loading your app. If your using rails, it's best to do this in `config/initializers/magick_title.rb`. 
+Using MagickTitle is easy. In it's simplest form, it can be used like so:
+
+    MagickTitle.say("Hello")
+
+This will create an image of the word "Hello" with all of the default options. These options can be set globally or on the fly. 
+
+Customize your global title styles by setting MagickTitle's default options while loading your app. If your using rails, it's best to do this in `config/initializers/magick_title.rb`. 
 
     # Here's the defaults
     MagickTitle.options = {
