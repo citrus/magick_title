@@ -60,12 +60,23 @@ module MagickTitle
       self
     end
     
+    # returns width, height and size of a title
+    def identify
+      return @identify if @identify
+      command = cmd('identify', info_command_string(fullpath))
+      puts command if options.log_command
+      @identify = Hash.create(
+        [:width, :height, :size],
+        `#{command}`.strip.split(",").map{|i| i.to_i }
+      )
+    end
+    
     
     # Saves title and generates image
     def save
       # validate
       return unless valid?
-
+    
       # check for caching
       return true if options.cache && !dirty?
       
@@ -76,7 +87,12 @@ module MagickTitle
       delete(fullpath)
       
       FileUtils.mkdir_p(path)
-      run('convert', title_command_string(fullpath))
+      
+      command = cmd('convert', title_command_string(fullpath))
+      command = %(echo "#{@text.gsub('"', '\\"')}" | #{command})
+      puts command if options.log_command
+      system command
+      
       File.exists?(fullpath)
     end
     
@@ -132,6 +148,7 @@ module MagickTitle
       attributes = []
       return "" unless hash.is_a?(Hash)
       hash.each { |key, value| attributes << %(#{key}="#{value}") if value and 0 < value.length }
+      return "" if attributes.length == 0
       " " + attributes.join(" ").strip
     end
     
@@ -141,13 +158,13 @@ module MagickTitle
     
       # builds an imagemagick identify command to the specified fild
       def info_command_string(file)
-        "-format '%b,%w,%h' #{file}"
+        "-format '%w,%h,%b' #{file}"
       end
+      
       
       # builds an imagemagick command based on the supplied options 
       def title_command_string(file="")
-        %(
-          #{'-trim ' unless 0 < options.height.to_i}
+        opts = %(
           -antialias
           -background '#{options.background_color}#{options.background_alpha}'
           -fill '#{options.color}'
@@ -156,18 +173,20 @@ module MagickTitle
           -size #{options.width}x#{options.height}
           -weight #{options.weight}
           -kerning #{options.kerning}
-          caption:'#{@text}'
+          caption:@-
           #{file}
-        ).gsub(/[\n\r\s]+/, ' ')
-      end 
+        ).split("\n")
+        
+        opts.unshift "-trim" unless 0 < options.height.to_i
+        opts.unshift "-interline-spacing #{options.line_height}" unless 0 == options.line_height.to_i
+        
+        opts.join(" ").gsub(/\s+/, ' ')
+      end
       
-      
-      # Cleans and runs the supplied command       
-      # (stolen from paperclip)
-      def run(cmd, params)
-        command = [path_for_command(cmd), params.to_s.gsub(/\\|\n|\r/, '')].join(" ")
-        puts command if options.log_command
-        `#{command}`
+            
+      # Cleans and runs the supplied command
+      def cmd(command, params)
+        [path_for_command(command), params.to_s.gsub(/\\|\n|\r/, '')].join(" ")
       end 
       
       
@@ -180,7 +199,7 @@ module MagickTitle
       
       # Creates a filename token based on the title's options
       def filename_from_options
-        digest = Digest::SHA1.hexdigest(title_command_string)
+        digest = Digest::SHA1.hexdigest([@text, title_command_string].join("--"))
         "#{unique_filename}_#{digest}.#{options.extension}"
       end
       
@@ -191,7 +210,6 @@ module MagickTitle
         file = text.to_s.downcase.gsub(/[^a-z0-9\s\-\_]/, '').strip.gsub(/[\s\-\_]+/, '_')
         file
       end
-      
       
       
       # creates a unique filename for the title's text

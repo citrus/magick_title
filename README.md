@@ -21,7 +21,7 @@ As usual, just use the `gem install` command:
     
 Or add magick_title as a gem in your Gemfile:
 
-    gem 'magick_title', '>= 0.1.6' 
+    gem 'magick_title', '>= 0.1.7' 
 
 Then run `bundle install`
 
@@ -41,7 +41,7 @@ Using MagickTitle is easy. First, customize your global title styles by setting 
       :destination => Proc.new{ File.join MagickTitle.root, "public/system/titles" },
       :extension => "png",
       :width => 800,
-      :height => nil,
+      :height => nil,  # setting to nil or 0 will trim to minimum height
       :background_color => '#ffffff',
       :background_alpha => '00',
       :color => '#68962c',
@@ -108,6 +108,7 @@ The html helper can also be customized:
     
     #=> <h3 id="maaaagick"><img class="custom-title" alt="Hello!" src="/system/titles/hello_f76179c852bb2fa264b8ad2c0c9ceeb9f99dfc0b.png"/></h3>
 
+
 Combine no-parent with custom attributes:
 
     MagickTitle.say("Hello!").to_html(:class => "custom-title", :parent => nil)
@@ -115,7 +116,12 @@ Combine no-parent with custom attributes:
     #=> <img class="custom-title" alt="Hello!" src="/system/titles/hello_f76179c852bb2fa264b8ad2c0c9ceeb9f99dfc0b.png"/>
 
 
+To make sure all titles are the same height:
+
+    MagickTitle.say("HELLO!", :height => 50).to_html
+    MagickTitle.say("lowercase j's!", :height => 50).to_html
     
+     
     
 ### More to come!
 

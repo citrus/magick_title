@@ -41,6 +41,7 @@ module MagickTitle
         :color => '#68962c',
         :weight => 400,
         :kerning => 0,
+        :line_height => 'auto',
         :command_path => nil,
         :log_command => false,
         :cache => true,
@@ -70,7 +71,6 @@ module MagickTitle
     
     # Checks if the option is valid before storing
     def store(key, value)      
-      puts "Storing: #{key} = #{value.inspect}" 
       raise NoMethodError, "MagickTitle::InvalidOption: #{key} is not an available option." unless defaults.keys.include?(key)
       super(key, value)
     end

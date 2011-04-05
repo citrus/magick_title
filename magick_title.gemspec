@@ -20,6 +20,5 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   
   s.add_development_dependency 'shoulda', '2.11.3'
-  s.add_development_dependency 'rack-test', '0.5.7'
   s.add_development_dependency 'sinatra', '1.1.0'
 end
