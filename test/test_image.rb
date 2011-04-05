@@ -75,7 +75,7 @@ class TestImage < Test::Unit::TestCase
     
     should "return convert_command" do
       assert @title.convert_command.match('echo "hello!" | convert')
-      assert @title.convert_command.match(/\/.png$/)
+      assert @title.convert_command.match(/\.png$/)
     end
     
     should "identify its dimensions and size" do

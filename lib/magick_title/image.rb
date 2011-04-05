@@ -129,7 +129,7 @@ module MagickTitle
       
     def convert_command
       command = cmd('convert', title_command_string(fullpath))
-      command = %(echo "#{@text.gsub('"', '\\"')}" | #{command})
+      %(echo "#{@text.gsub('"', '\\"')}" | #{command}).strip
     end
     
     
