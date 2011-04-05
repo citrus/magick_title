@@ -92,8 +92,6 @@ module MagickTitle
         val = fetch(key)
         val.nil? ? nil : val.is_a?(Proc) ? val.call : val
       else
-        #puts "Storing: #{method}"
-        #puts args[0]
         store(method.to_sym, args[0])
       end
           

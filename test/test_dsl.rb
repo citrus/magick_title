@@ -27,6 +27,8 @@ class TestDsl < Test::Unit::TestCase
     end
     
     assert MagickTitle.styles.include?(:h2)
+    assert_equal 30, MagickTitle.styles[:h2][:font_size]
+    assert_equal "#cc0000", MagickTitle.styles[:h2][:color]
     
     puts MagickTitle.say("Styles are awesome!", :h2).to_html
     
