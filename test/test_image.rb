@@ -1,18 +1,9 @@
+#! /usr/bin/env ruby
+# encoding: UTF-8
+
 require 'helper'
 
 class TestImage < Test::Unit::TestCase
-
-  def assert_opening_tag(html, tag, inline=false)
-    assert html.match(Regexp.new("#{'^' unless inline}<#{tag}\s?")), "#{tag} opening tag"
-  end
-  
-  def assert_closing_tag(html, tag, inline=false)
-    assert html.match(Regexp.new("</#{tag}>#{'$' unless inline}")), "#{tag} closing tag"
-  end
-  
-  def assert_self_closing_tag(html)
-    assert html.match(/\/>$/), "Has self closing tag"
-  end
   
   should "create an instance of MagickTitle::Image" do
     @title = MagickTitle::Image.create("created using class method")
@@ -43,6 +34,7 @@ class TestImage < Test::Unit::TestCase
     end
     
   end
+  
     
   context "a valid title" do
   
@@ -62,16 +54,8 @@ class TestImage < Test::Unit::TestCase
       assert !File.exists?(@title.fullpath)
     end
     
-    should "downcase the image tag text" do 
-      html = @title.to_html(:id => "crazy-test-id", :class => "span-12 last", :alt => "Custom Alt Tags, Yo!", :parent => nil)
-      assert_opening_tag html, 'img'
-      assert html.match(/id="crazy-test-id"/)
-      assert html.match(/class="span-12\slast"/)
-      assert html.match(/alt="Custom\sAlt\sTags\,\sYo\!"/)
-      assert_self_closing_tag html
-    end
-    
   end
+  
   
   context "an existing title" do
   
@@ -112,55 +96,8 @@ class TestImage < Test::Unit::TestCase
       assert mod != mod2
     end
     
-    should "create an html img tag without a parent element" do
-      html = @title.to_html(false)
-      assert html.is_a?(String)
-      assert_opening_tag html, 'img'
-      assert html.match("src=#{@title.url.inspect}"), "Sets src to url"
-      assert html.match("alt=#{@title.text.inspect}"), "Sets alt to text"
-      assert_self_closing_tag html
-    end
-    
-    should "set the parent html container with a string" do
-      tag = "h3"
-      html = @title.to_html(tag)
-      assert_opening_tag html, tag
-      assert_closing_tag html, tag
-    end
-    
-    should "defaults the parent html container" do
-      tag  = "h1"
-      html = @title.to_html(:parent => { :id => "custom_id" })
-      assert_opening_tag html, tag
-      assert_opening_tag html, 'img', true #inline img tag
-      assert_closing_tag html, tag
-    end
-    
-    should "use a different parent container" do
-      tag = "div"
-      html = @title.to_html(tag)
-      assert html.match(/<div></)
-    end
-    
-    should "customize the parent html container" do
-      tag = "div"
-      html = @title.to_html(:parent => { :tag => tag, :id => "custom_id", :class => "some-class" })
-      assert_opening_tag html, tag
-      assert html.match(/id="custom_id"/)
-      assert html.match(/class="some-class"/)
-      assert_closing_tag html, tag
-    end
-    
-    should "customize the image tag" do 
-      html = @title.to_html(:id => "crazy-test-id", :class => "span-12 last", :alt => "Custom Alt Tags, Yo!", :parent => nil)
-      assert_opening_tag html, 'img'
-      assert html.match(/id="crazy-test-id"/)
-      assert html.match(/class="span-12\slast"/)
-      assert html.match(/alt="Custom\sAlt\sTags\,\sYo\!"/)
-      assert_self_closing_tag html
-    end
-    
   end
+  
   
   context "titles with the same text" do
     
@@ -173,7 +110,7 @@ class TestImage < Test::Unit::TestCase
     end
     
     should "each have uniq filenames" do
-      assert @title1.filename != @title2.filename 
+      assert @title1.filename != @title2.filename
       assert @title2.filename != @title3.filename
       assert @title3.filename != @title4.filename
       assert @title4.filename != @title5.filename
@@ -182,14 +119,11 @@ class TestImage < Test::Unit::TestCase
     
   end
     
-  
     
-  context "a long or short title" do
+  context "an unusual title" do
     
     should "allow one letter titles" do
       @title = MagickTitle::Image.create("a")
-      assert @title.valid?
-      assert @title.save
     end
     
     should "truncate filename when long" do
@@ -197,10 +131,10 @@ class TestImage < Test::Unit::TestCase
       assert @title.filename.length < 100
     end
     
-  end
-    
-  context "a title with quotes" do
-  
+    should "allow utf8 characters" do
+      @title = MagickTitle::Image.create("J'aime Café Chèvre et Crêpes")
+    end
+      
     should "allow single quotes" do
       @title = MagickTitle::Image.create("It's pretty nifty")
     end
@@ -213,11 +147,15 @@ class TestImage < Test::Unit::TestCase
       @title = MagickTitle::Image.create(%("Ruby rocks" - it's what she said))
     end
     
+    should "allow escaped quotes" do
+      @title = MagickTitle::Image.create(%(he said, "\"Ruby rocks\" - it\'s what she said"))
+    end
+    
     teardown do
       assert @title.valid?
       assert @title.save      
     end
     
   end
-    
+  
 end

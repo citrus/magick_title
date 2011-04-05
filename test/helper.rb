@@ -12,12 +12,11 @@ class Test::Unit::TestCase
   def setup
     super
     MagickTitle.options[:root] = File.expand_path("../dummy", __FILE__)
-    MagickTitle.options[:log_command] = true
+    MagickTitle.options[:log_command] = false
     FileUtils.rm_r MagickTitle.options.destination if Dir.exists?(MagickTitle.options.destination)
   end
   
   def teardown
-    puts "\n\n"
     # nada
   end
 

@@ -60,7 +60,7 @@ module MagickTitle
     def save
       # validate
       return unless valid?
-
+    
       # check for caching
       return true if options.cache && !dirty?
       
@@ -71,7 +71,12 @@ module MagickTitle
       delete(fullpath)
       
       FileUtils.mkdir_p(path)
-      run('convert', title_command_string(fullpath))
+      
+      command = cmd('convert', title_command_string(fullpath))
+      command = %(echo "#{@text.gsub('"', '\\"')}" | #{command})
+      puts command if options.log_command
+      system command
+      
       File.exists?(fullpath)
     end
     
@@ -151,22 +156,19 @@ module MagickTitle
           -size #{options.width}x#{options.height}
           -weight #{options.weight}
           -kerning #{options.kerning}
-          caption:'#{escape_for_convert(@text)}'
+          caption:@-
           #{file}
         ).gsub(/[\n\r\s]+/, ' ')
       end 
       
       def escape_for_convert(string)
-        string.gsub(/('|")/, "\\#{$1}")
+        string.gsub(/(['"])/) { |q| "\\#{q}" }
       end
       
             
-      # Cleans and runs the supplied command       
-      # (stolen from paperclip)
-      def run(cmd, params)
-        command = [path_for_command(cmd), params.to_s.gsub(/\\|\n|\r/, '')].join(" ")
-        puts command if options.log_command
-        `#{command}`
+      # Cleans and runs the supplied command
+      def cmd(command, params)
+        [path_for_command(command), params.to_s.gsub(/\\|\n|\r/, '')].join(" ")
       end 
       
       
@@ -180,7 +182,7 @@ module MagickTitle
       
       # Creates a filename token based on the title's options
       def filename_from_options
-        digest = Digest::SHA1.hexdigest(title_command_string)
+        digest = Digest::SHA1.hexdigest([@text, title_command_string].join("--"))
         "#{unique_filename}_#{digest}.#{options.extension}"
       end
       
