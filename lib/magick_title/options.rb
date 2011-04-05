@@ -41,7 +41,7 @@ module MagickTitle
         :color => '#68962c',
         :weight => 400,
         :kerning => 0,
-        :line_height => 'auto',
+        :line_height => 0,
         :command_path => nil,
         :log_command => false,
         :cache => true,

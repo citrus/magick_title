@@ -16,6 +16,7 @@ class TestImage < Test::Unit::TestCase
     @title2 = MagickTitle::Image.create("Default\nLine\nHeight", :line_height => -25)
     assert_equal 133, @title2.identify[:height]
   end
+
     
   
   context "an invalid title" do
@@ -70,6 +71,11 @@ class TestImage < Test::Unit::TestCase
   
     setup do
       @title = MagickTitle::Image.create("hello!")
+    end
+    
+    should "return convert_command" do
+      assert @title.convert_command.match('echo "hello!" | convert')
+      assert @title.convert_command.match(/\/.png$/)
     end
     
     should "identify its dimensions and size" do

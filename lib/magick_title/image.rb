@@ -88,10 +88,10 @@ module MagickTitle
       
       FileUtils.mkdir_p(path)
       
-      command = cmd('convert', title_command_string(fullpath))
-      command = %(echo "#{@text.gsub('"', '\\"')}" | #{command})
-      puts command if options.log_command
-      system command
+      #command = cmd('convert', title_command_string(fullpath))
+      #command = %(echo "#{@text.gsub('"', '\\"')}" | #{command})
+      puts convert_command if options.log_command
+      system convert_command
       
       File.exists?(fullpath)
     end
@@ -126,6 +126,12 @@ module MagickTitle
       File.join(path, filename)
     end
     
+      
+    def convert_command
+      command = cmd('convert', title_command_string(fullpath))
+      command = %(echo "#{@text.gsub('"', '\\"')}" | #{command})
+    end
+    
     
     # Creates and HTML image tag with the options provided
     def to_html(opts={})
@@ -143,14 +149,6 @@ module MagickTitle
     end
     
     
-    # Converts a hash to a string of html style key="value" pairs
-    def hash_to_attributes(hash)
-      attributes = []
-      return "" unless hash.is_a?(Hash)
-      hash.each { |key, value| attributes << %(#{key}="#{value}") if value and 0 < value.length }
-      return "" if attributes.length == 0
-      " " + attributes.join(" ").strip
-    end
     
     
     private
@@ -224,7 +222,16 @@ module MagickTitle
         end
         dupe || file
       end
+  
       
+      # Converts a hash to a string of html style key="value" pairs
+      def hash_to_attributes(hash)
+        attributes = []
+        return "" unless hash.is_a?(Hash)
+        hash.each { |key, value| attributes << %(#{key}="#{value}") if value and 0 < value.length }
+        return "" if attributes.length == 0
+        " " + attributes.join(" ").strip
+      end
           
   end # Image
   

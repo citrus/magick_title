@@ -1,6 +1,9 @@
 <% if @success && @image_title %>
   <h1>Success!</h1>
   <img src=<%= @image_title.url.inspect %> alt=<%= @image_title.text.inspect %>/>
+  <pre class="wrap">
+    <%= @image_title.convert_command %>
+  </pre>
 <% elsif @success === false %>
   <h1>Failed.</h1>
 <% else %>
@@ -34,7 +37,7 @@
   </div>
   
   <div class="option">
-    <p>Height: <em><span id="value_height"><%= @options[:height] %> pixels</span></em></p>
+    <p>Height: <em><span id="value_height"><%= @options[:height].to_i %> pixels</span></em></p>
     
     <p>
       <input type="checkbox" id="auto_height" name="auto_height"<%= ' checked="checked"' if @options[:height].to_i == 0 %>/>
@@ -42,7 +45,7 @@
     </p>
     
     <div id="slider_height"></div>
-    <input type="hidden" name="options[height]" id="options_height" value="<%= @options[:height] %>" />
+    <input type="hidden" name="options[height]" id="options_height" value="<%= @options[:height].to_i %>" />
    
   </div>
   
@@ -87,7 +90,9 @@
 	
 	
 	<p>
-    <input type="submit" value="generate"/>
+    <button type="submit">
+      <%= MagickTitle.say("Magick Title Go!", :button).to_html %>
+    </button>
   </p>
 </form>
 
@@ -170,9 +175,9 @@
 
 
 	$("#slider_width").slider({
-	  value: <%= @options[:width].to_i || 400 %>,
+	  value: <%= @options[:width] %>,
     min: 100,
-		max: 700,
+		max: 800,
 		slide: function( event, ui ) {
 		  $("#value_width").text(ui.value);
 		  $("#options_width").val(ui.value);
@@ -195,7 +200,7 @@
   }).change(); 
   
 	$("#slider_height").slider({
-	  value: <%= @options[:height].to_i || 50 %>,
+	  value: <%= 0 == @options[:height].to_i ? 20 : @options[:height] %>,
     min: 20,
 		max: 100,
 		slide: function( event, ui ) {
@@ -205,7 +210,7 @@
 	});
 
 	$("#slider_font_size").slider({
-	  value: <%= @options[:font_size].to_i || 30 %>,
+	  value: <%= @options[:font_size] %>,
     min: 10,
 		max: 100,
 		slide: function( event, ui ) {
@@ -215,7 +220,7 @@
 	});
 	
 	$("#slider_kerning").slider({
-	  value: <%= @options[:kerning].to_i || 0 %>,
+	  value: <%= @options[:kerning] %>,
     min: -50,
 		max: 50,
 		slide: function( event, ui ) {
@@ -225,11 +230,11 @@
 	});
 	
 	$("#slider_line_height").slider({
-	  value: <%= @options[:line_height].to_i || 0 %>,
-    min: -50,
-		max: 50,
+	  value: <%= @options[:line_height].to_i %>,
+    min: -100,
+		max: 100,
 		slide: function( event, ui ) {
-		  $("#value_line_height").text(ui.value + ' pixels');
+		  $("#value_line_height").text(ui.value);
 		  $("#options_line_height").val(ui.value);
 		}
 	});

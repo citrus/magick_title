@@ -6,10 +6,15 @@ MagickTitle.style :h1 do
 end
 
 MagickTitle.style :h2 do
-  font_size 27
-  font 'PermanentMarker.ttf'
+  font_size 30
   color '#999'
   to_html :parent => { :tag => "h2" }
+end
+
+MagickTitle.style :button do
+  to_html :parent => false
+  color '#555'
+  font_size 27
 end
 
 use Rack::Static
@@ -19,6 +24,6 @@ get '/' do
     @image_title = MagickTitle::Image.new(params[:text], params[:options])
     @success = @image_title.save
   end
-  @options = params[:options] || {}
+  @options = params[:options] || MagickTitle.options
   erb :index
 end
