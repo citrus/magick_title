@@ -1,4 +1,11 @@
+class << Hash
+  def create(keys, values)
+    self[*keys.zip(values).flatten]
+  end
+end
+
 class Hash
+  
   # Stolen from rails 
   def symbolize_keys
     self.inject({}){|result, (key, value)|
@@ -14,4 +21,5 @@ class Hash
       result
     }  
   end  
+  
 end

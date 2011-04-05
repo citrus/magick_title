@@ -55,6 +55,17 @@ module MagickTitle
       self
     end
     
+    # returns width, height and size of a title
+    def identify
+      return @identify if @identify
+      command = cmd('identify', info_command_string(fullpath))
+      puts command if options.log_command
+      @identify = Hash.create(
+        [:width, :height, :size],
+        `#{command}`.strip.split(",").map{|i| i.to_i }
+      )
+    end
+    
     
     # Saves title and generates image
     def save
@@ -141,13 +152,13 @@ module MagickTitle
     
       # builds an imagemagick identify command to the specified fild
       def info_command_string(file)
-        "-format '%b,%w,%h' #{file}"
+        "-format '%w,%h,%b' #{file}"
       end
+      
       
       # builds an imagemagick command based on the supplied options 
       def title_command_string(file="")
-        %(
-          #{'-trim ' unless 0 < options.height.to_i}
+        opts = %(
           -antialias
           -background '#{options.background_color}#{options.background_alpha}'
           -fill '#{options.color}'
@@ -158,11 +169,12 @@ module MagickTitle
           -kerning #{options.kerning}
           caption:@-
           #{file}
-        ).gsub(/[\n\r\s]+/, ' ')
-      end 
-      
-      def escape_for_convert(string)
-        string.gsub(/(['"])/) { |q| "\\#{q}" }
+        ).split("\n")
+        
+        opts.unshift "-trim" unless 0 < options.height.to_i
+        opts.unshift "-interline-spacing #{options.line_height}" unless 0 == options.line_height.to_i
+        
+        opts.join(" ").gsub(/\s+/, ' ')
       end
       
             
@@ -170,7 +182,6 @@ module MagickTitle
       def cmd(command, params)
         [path_for_command(command), params.to_s.gsub(/\\|\n|\r/, '')].join(" ")
       end 
-      
       
       
       # returns the `bin` path to the command
@@ -193,7 +204,6 @@ module MagickTitle
         file = text.to_s.downcase.gsub(/[^a-z0-9\s\-\_]/, '').strip.gsub(/[\s\-\_]+/, '_')
         file
       end
-      
       
       
       # creates a unique filename for the title's text

@@ -9,6 +9,15 @@ class TestImage < Test::Unit::TestCase
     @title = MagickTitle::Image.create("created using class method")
   end
   
+  should "set a title's line-height" do
+    @title = MagickTitle::Image.create("Default\nLine\nHeight")
+    assert_equal 183, @title.identify[:height]
+    
+    @title2 = MagickTitle::Image.create("Default\nLine\nHeight", :line_height => -25)
+    assert_equal 133, @title2.identify[:height]
+  end
+    
+  
   context "an invalid title" do
   
     setup do
@@ -61,6 +70,15 @@ class TestImage < Test::Unit::TestCase
   
     setup do
       @title = MagickTitle::Image.create("hello!")
+    end
+    
+    should "identify its dimensions and size" do
+      hash = @title.identify
+      assert_equal Hash, hash.class
+      assert_equal 3, hash.values.length
+      assert_equal 155, hash[:width]
+      assert_equal 40, hash[:height]
+      assert_equal 3858, hash[:size]
     end
     
     should "cache when asked to" do
@@ -134,7 +152,7 @@ class TestImage < Test::Unit::TestCase
     should "allow utf8 characters" do
       @title = MagickTitle::Image.create("J'aime Café Chèvre et Crêpes")
     end
-      
+    
     should "allow single quotes" do
       @title = MagickTitle::Image.create("It's pretty nifty")
     end
