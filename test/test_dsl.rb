@@ -26,13 +26,10 @@ class TestDsl < Test::Unit::TestCase
       to_html   :parent => { :tag => "h2" }
     end
     
-    hash = {:parent => { :tag => "h2" }}
-    
     assert MagickTitle.styles.include?(:h2)
     assert_equal 30, MagickTitle.styles[:h2][:font_size]
     assert_equal "#cc0000", MagickTitle.styles[:h2][:color]
     assert_equal Hash, MagickTitle.styles[:h2][:to_html].class
-    assert_equal hash, MagickTitle.styles[:h2][:to_html]
     assert_equal "h2", MagickTitle.styles[:h2][:to_html][:parent][:tag]
   end
     

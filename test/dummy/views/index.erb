@@ -4,14 +4,14 @@
 <% elsif @success === false %>
   <h1>Failed.</h1>
 <% else %>
-  <%= MagickTitle.say("Hello!").to_html %>
-  <h2><%= MagickTitle.say("Welcome to MagickTitle!", :cache => false, :font => 'PermanentMarker.ttf', :font_size => 20, :color => '#999').to_html(false) %></h2>
+  <%= MagickTitle.say("Hello!", :h1).to_html %>
+  <%= MagickTitle.say("Welcome to MagickTitle!", :h2).to_html %>
 <% end %>
 
 
 <h2>Generate an image title!</h2>
 
-<form action="/" method="post">
+<form action="/" method="get">
   <p>
     <label for="text">Text:</label><br/>
     <textarea name="text" id="name" rows="5" cols="50"><%= params[:text] %></textarea>
@@ -21,47 +21,53 @@
     <label for="options_font">Font:</label>
     <select name="options[font]" id="options_font">
       <% Dir.entries(MagickTitle.options.font_path).reject!{|f| f.match(/\.+$/) }.each do |font| %>    
-        <option value="<%= font %>"><%= font.gsub(/\.[a-z]{3}/, '') %></option>
+        <option value="<%= font %>"<%= ' selected="selected"' if @options[:font] == font %>><%= font.gsub(/\.[a-z]{3}/, '') %></option>
       <% end %>
     </select>
   </p>
   
   
   <div class="option">
-    <p>Width: <em><span id="value_width">400</span> pixels</em></p>
+    <p>Width: <em><span id="value_width"><%= @options[:width] %></span> pixels</em></p>
     <div id="slider_width"></div>
-    <input type="hidden" name="options[width]" id="options_width" value="400" />
+    <input type="hidden" name="options[width]" id="options_width" value="<%= @options[:width] %>" />
   </div>
   
   <div class="option">
-    <p>Height: <em><span id="value_height">50 pixels</span></em></p>
+    <p>Height: <em><span id="value_height"><%= @options[:height] %> pixels</span></em></p>
     
     <p>
-      <input type="checkbox" id="auto_height" name="auto_height" />
+      <input type="checkbox" id="auto_height" name="auto_height"<%= ' checked="checked"' if @options[:height].to_i == 0 %>/>
       <label for="auto_height">Trim to minimum height</label>
     </p>
     
     <div id="slider_height"></div>
-    <input type="hidden" name="options[height]" id="options_height" value="50" />
+    <input type="hidden" name="options[height]" id="options_height" value="<%= @options[:height] %>" />
    
   </div>
   
   <div class="option">
-    <p>Font Size: <em><span id="value_font_size">30</span> pixels</em></p>
+    <p>Font Size: <em><span id="value_font_size"><%= @options[:font_size] %></span> pixels</em></p>
     <div id="slider_font_size"></div>
-    <input type="hidden" name="options[font_size]" id="options_font_size" value="30" />
+    <input type="hidden" name="options[font_size]" id="options_font_size" value="<%= @options[:font_size] %>" />
   </div>
   
   <div class="option">
-    <p>Kerning: <em><span id="value_kerning">0</span></em></p>
+    <p>Kerning: <em><span id="value_kerning"><%= @options[:kerning] %></span></em></p>
     <div id="slider_kerning"></div>
-    <input type="hidden" name="options[kerning]" id="options_kerning" value="0" />
+    <input type="hidden" name="options[kerning]" id="options_kerning" value="<%= @options[:kerning] %>" />
+  </div>
+  
+  <div class="option">
+    <p>Line Height: <em><span id="value_line_height"><%= @options[:line_height] %></span></em></p>
+    <div id="slider_line_height"></div>
+    <input type="hidden" name="options[line_height]" id="options_line_height" value="<%= @options[:line_height] %>" />
   </div>
   
   
   
   <div class="option">
-    <p>Color: <input type="text" name="options[color]" id="options_color" /></p>
+    <p>Color: <input type="text" name="options[color]" id="options_color" value="<%= @options[:color] %>" /></p>
     
     <div id="red"></div>
     <div id="green"></div>
@@ -123,22 +129,26 @@
 		return hex;
 	}
 	
+	
   $( "#red, #green, #blue" ).slider({
     orientation: "horizontal",
     range: "min",
     max: 255,
-    value: 127,
     slide: function() {
       $("#options_color").val(refreshSwatch());
     },
     change: refreshSwatch
   });
 
-
-  $("#options_color").val(refreshSwatch()).change(function(evt) {
-    var key = this.value.split("").pop();
-    console.log(key);
-    if (key && !key.match(/[#A-Fa-f0-9]/)) {
+	var rgb = hexToRgb($("#options_color").val());
+  $("#red").slider("value", rgb[0]);
+  $("#green").slider("value", rgb[1]);
+  $("#blue").slider("value", rgb[2]);
+  
+	$("#options_color").change(function(evt) {
+    var hex = this.value.split("").pop();
+    console.log(hex);
+    if (hex && !hex.match(/[#A-Fa-f0-9]/)) {
       console.log('INVALID KEY');
     }
   }).keyup(function() {
@@ -152,15 +162,15 @@
     }
   });
 
+
   
 
 
 
 
 
-
 	$("#slider_width").slider({
-	  value: 400,
+	  value: <%= @options[:width].to_i || 400 %>,
     min: 100,
 		max: 700,
 		slide: function( event, ui ) {
@@ -179,14 +189,13 @@
     } else {
       var val = $("#slider_height").slider('value');
 		  $("#value_height").text(val);
+  	 	$("#options_height").val(val);
     }
 		
   }).change(); 
   
-  
-
 	$("#slider_height").slider({
-	  value: 50,
+	  value: <%= @options[:height].to_i || 50 %>,
     min: 20,
 		max: 100,
 		slide: function( event, ui ) {
@@ -196,7 +205,7 @@
 	});
 
 	$("#slider_font_size").slider({
-	  value: 30,
+	  value: <%= @options[:font_size].to_i || 30 %>,
     min: 10,
 		max: 100,
 		slide: function( event, ui ) {
@@ -206,7 +215,7 @@
 	});
 	
 	$("#slider_kerning").slider({
-	  value: 0,
+	  value: <%= @options[:kerning].to_i || 0 %>,
     min: -50,
 		max: 50,
 		slide: function( event, ui ) {
@@ -215,6 +224,15 @@
 		}
 	});
 	
-   
+	$("#slider_line_height").slider({
+	  value: <%= @options[:line_height].to_i || 0 %>,
+    min: -50,
+		max: 50,
+		slide: function( event, ui ) {
+		  $("#value_line_height").text(ui.value + ' pixels');
+		  $("#options_line_height").val(ui.value);
+		}
+	});
+  
 //]]>
 </script>
