@@ -39,31 +39,33 @@ This will create an image of the word "Hello" with all of the default options. T
 Customize your global title styles by setting MagickTitle's default options while loading your app. If your using rails, it's best to do this in `config/initializers/magick_title.rb`. 
 
     # Here's the defaults
-    MagickTitle.options = {
-      :root => "./",
-      :font => "PermanentMarker.otf",
-      :font_path => Proc.new{ File.join MagickTitle.root, "fonts" },
-      :font_size => 50,
-      :destination => Proc.new{ File.join MagickTitle.root, "public/system/titles" },
-      :extension => "png",
-      :width => 800,
-      :height => nil,  # setting to nil or 0 will trim to minimum height
-      :background_color => '#ffffff',
-      :background_alpha => '00',
-      :color => '#68962c',
-      :weight => 400,
-      :kerning => 0,
-      :command_path => nil,
-      :log_command => false,
-      :cache => true,
-      :to_html => {
-        :parent => {
-          :tag   => "h1",
-          :class => "image-title"
-        },
-        :class => "magick-title"
-      }
+
+    :root => "./",
+    :font => "PermanentMarker.ttf",
+    :font_path => Proc.new{ File.join MagickTitle.root, "fonts" },
+    :font_size => 50,
+    :destination => Proc.new{ File.join MagickTitle.root, "public/system/titles" },
+    :extension => "png",
+    :text_transform => nil,
+    :width => 800,
+    :height => nil,
+    :background_color => '#ffffff',
+    :background_alpha => '00',
+    :color => '#68962c',
+    :weight => 400,
+    :kerning => 0,
+    :line_height => 0,
+    :command_path => nil,
+    :log_command => false,
+    :cache => true,
+    :to_html => {
+      :parent => {
+        :tag   => "h1",
+        :class => "image-title"
+      },
+      :class => "magick-title"
     }
+
     
 Set as few or as many options as you'd like. Your custom options will get merged into the defaults... You can also set individual options like this:
 
@@ -126,7 +128,29 @@ To make sure all titles are the same height:
 
     MagickTitle.say("HELLO!", :height => 50).to_html
     MagickTitle.say("lowercase j's!", :height => 50).to_html
+  
+  
+
+New in version 0.1.8 are styles. Store styles in your initializer using the slick new DSL:
+
     
+    MagickTitle.style :h1 do
+      font_size   50
+      line_height -10
+    end
+    
+    MagickTitle.style :sidebar do
+      font      "Lobster.ttf"
+      font_size 30
+      color     "#cc0000"
+      to_html   :parent => { :tag => "h2" }
+    end
+    
+    
+Now in your views just:
+    
+    MagickTitle.say("Hello!", :h1).to_html 
+    MagickTitle.say("World.", :sidebar).to_html   
      
     
 ### More to come!
@@ -137,8 +161,6 @@ To Do
 -----
 
 * Write more tests
-* Write DSL for options (in progress)
-* Support for multiple preset styles (`MagickTitle.say("Hello!", :subtitle)` or `MagickTitle.say("Hello!", :sidebar_title)`) (in progress)
 * Smart option validation (:color => 'fff' converts to :color => '#fff' and :color => 'pink' fails)
 * More documentation
 * Auto ActiveRecord integration (`has_magick_title` class method)
