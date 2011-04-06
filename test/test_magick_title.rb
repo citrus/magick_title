@@ -15,7 +15,7 @@ class TestMagickTitle < Test::Unit::TestCase
   
   should "not get cut off" do
     
-    @title = MagickTitle.say("HELLO MAGICK TITLE OF DOOM!", :font_path => "/Users/Spencer/Library/Fonts", :font => "HelveticaNeueLTStd-UltLt.otf", :color => "#000000")
+    @title = MagickTitle.say("HELLO MAGICK TITLE OF DOOM!", :color => "#000000")
     assert File.exists?(@title.fullpath)
     
   end
