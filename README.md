@@ -21,7 +21,7 @@ As usual, just use the `gem install` command:
     
 Or add magick_title as a gem in your Gemfile:
 
-    gem 'magick_title', '>= 0.1.7' 
+    gem 'magick_title', '>= 0.1.8' 
 
 Then run `bundle install`
 
