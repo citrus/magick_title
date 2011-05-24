@@ -165,7 +165,7 @@ To Do
 * More documentation
 * Auto ActiveRecord integration (`has_magick_title` class method)
 * Heroku support / tempfiles / base64
-* Clean up and publish demo app
+* Clean up and publish demo app (/test/dummy)
 
 
 License
