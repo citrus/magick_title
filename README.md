@@ -3,7 +3,7 @@ Magick Title
 
 Want beautiful copyright-protected browser-compatible custom-smoothed & kerned fonts? MagickTitle delivers just that by using [imagemagick](http://www.imagemagick.org/script/index.php) to generate titles based on the options you provide.
 
-Want your titles to be automagically created for your Rails apps' models, check out [has_magick_title](https://github.com/citrus/has_magick_title).
+Want your titles to be automagically created for your Rails apps' models? Check out [has_magick_title](https://github.com/citrus/has_magick_title).
 
 
 Requirements
