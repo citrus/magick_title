@@ -1,6 +1,7 @@
 require 'magick_title/hash'
 require 'magick_title/options'
 require 'magick_title/image'
+require 'magick_title/renderer'
 
 module MagickTitle
 

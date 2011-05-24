@@ -3,7 +3,7 @@
 
 require 'helper'
 
-class TestToHtml < Test::Unit::TestCase
+class TestRenderer < Test::Unit::TestCase
 
   def assert_opening_tag(html, tag, inline=false)
     assert html.match(Regexp.new("#{'^' unless inline}<#{tag}\s?")), "#{tag} opening tag"

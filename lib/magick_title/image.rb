@@ -137,15 +137,7 @@ module MagickTitle
     def to_html(opts={})
       opts = { :parent => nil } if opts === false
       opts = { :parent => opts } if opts.is_a?(String)
-      opts = options[:to_html].merge(:alt => text, :src => url).merge(opts)
-      parent = opts.delete(:parent)
-      tag = %(<img#{hash_to_attributes(opts)}/>)
-      if parent
-        ptag = parent.is_a?(String) ? parent : parent.is_a?(Hash) ? parent.delete(:tag) : nil
-        ptag ||= "h1"
-        tag = %(<#{ptag}#{hash_to_attributes(parent)}>#{tag}</#{ptag}>)
-      end    
-      tag
+      Renderer.to_html(text, url, options[:to_html].merge(opts))
     end
     
     
@@ -221,16 +213,6 @@ module MagickTitle
           exists = exists? dupe
         end
         dupe || file
-      end
-  
-      
-      # Converts a hash to a string of html style key="value" pairs
-      def hash_to_attributes(hash)
-        attributes = []
-        return "" unless hash.is_a?(Hash)
-        hash.each { |key, value| attributes << %(#{key}="#{value}") if value and 0 < value.length }
-        return "" if attributes.length == 0
-        " " + attributes.join(" ").strip
       end
           
   end # Image
