@@ -17,8 +17,25 @@ class TestRenderer < Test::Unit::TestCase
     assert html.match(/\/>$/), "Has self closing tag"
   end
   
+  context "the renderer by itself" do
   
-  context "an existing title" do
+    should "create the most basic tag" do
+      tag = %(<img alt="Hello" src="test.jpg"/>)
+      html = MagickTitle::Renderer.to_html("Hello", "test.jpg", false)
+      assert_equal tag, html
+    end
+    
+    should "create the most basic tag inside a parent" do
+      tag = %(<p><img alt="Hello" src="test.jpg"/></p>)
+      html = MagickTitle::Renderer.to_html("Hello", "test.jpg", "p")
+      assert_equal tag, html
+    end
+    
+    
+  
+  end  
+  
+  context "with an existing title" do
   
     setup do
       @title = MagickTitle::Image.create("hello mr. to_html!")
@@ -73,5 +90,6 @@ class TestRenderer < Test::Unit::TestCase
     end
   
   end
+  
   
 end
