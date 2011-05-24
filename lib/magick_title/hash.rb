@@ -22,13 +22,4 @@ class Hash
     }  
   end  
   
-  
-  # Converts a hash to a string of html style key="value" pairs
-  def to_attributes
-    attributes = []
-    self.each { |key, value| attributes << %(#{key}="#{value}") if value and 0 < value.length }
-    return "" if attributes.length == 0
-    " " + attributes.join(" ").strip
-  end
-  
 end
