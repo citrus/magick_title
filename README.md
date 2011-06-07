@@ -21,7 +21,7 @@ As usual, just use the `gem install` command:
     
 Or add magick_title as a gem in your Gemfile:
 
-    gem 'magick_title', '>= 0.1.8' 
+    gem 'magick_title', '>= 0.2.0' 
 
 Then run `bundle install`
 
@@ -160,11 +160,11 @@ Now in your views just:
 To Do
 -----
 
-* Write more tests
 * Smart option validation (:color => 'fff' converts to :color => '#fff' and :color => 'pink' fails)
 * More documentation
 * Heroku support / tempfiles / base64
 * Clean up and publish demo app (/test/dummy)
+* Write more tests
 
 
 License
