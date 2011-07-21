@@ -1,5 +1,4 @@
-Magick Title
-============
+# Magick Title [![Build Status](https://secure.travis-ci.org/citrus/magick_title.png)](http://travis-ci.org/citrus/magick_title)
 
 Want beautiful copyright-protected browser-compatible custom-smoothed & kerned fonts? MagickTitle delivers just that by using [imagemagick](http://www.imagemagick.org/script/index.php) to generate titles based on the options you provide.
 
