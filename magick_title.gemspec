@@ -19,8 +19,8 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  s.add_development_dependency 'rake',    '0.9.2'
-  s.add_development_dependency 'shoulda', '2.11.3'
-  s.add_development_dependency 'sinatra', '1.1.0'
+  s.add_development_dependency 'rake',    '>= 0.9.2'
+  s.add_development_dependency 'shoulda', '>= 2.11.3'
+  s.add_development_dependency 'sinatra', '>= 1.1.0'
   
 end

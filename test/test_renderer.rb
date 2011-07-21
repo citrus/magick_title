@@ -3,7 +3,7 @@
 
 require 'helper'
 
-class TestRenderer < Test::Unit::TestCase
+class TestRenderer < MagickTitle::TestCase
 
   def assert_opening_tag(html, tag, inline=false)
     assert html.match(Regexp.new("#{'^' unless inline}<#{tag}\s?")), "#{tag} opening tag"
@@ -30,8 +30,6 @@ class TestRenderer < Test::Unit::TestCase
       html = MagickTitle::Renderer.to_html("Hello", "test.jpg", "p")
       assert_equal tag, html
     end
-    
-    
   
   end  
   

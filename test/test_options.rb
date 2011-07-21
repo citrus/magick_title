@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestOptions < Test::Unit::TestCase
+class TestOptions < MagickTitle::TestCase
 
   def setup
     @font_path = MagickTitle.options[:font_path]

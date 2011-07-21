@@ -3,8 +3,8 @@
 
 require 'helper'
 
-class TestImage < Test::Unit::TestCase
-  
+class TestImage < MagickTitle::TestCase
+    
   should "create an instance of MagickTitle::Image" do
     @title = MagickTitle::Image.create("created using class method")
   end

@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestDsl < Test::Unit::TestCase
+class TestDsl < MagickTitle::TestCase
 
   should "set font" do
     
