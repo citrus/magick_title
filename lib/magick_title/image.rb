@@ -49,7 +49,7 @@ module MagickTitle
       @old_path = fullpath
       
       if opts.is_a? Hash
-        @options = (@options || MagickTitle.options).merge(opts.symbolize_keys)
+        @options = (@options || MagickTitle.options).merge(opts.recursive_symbolize_keys)
       elsif opts.is_a? Symbol
         @options = MagickTitle.styles[opts]
       end
