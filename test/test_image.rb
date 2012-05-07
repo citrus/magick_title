@@ -5,16 +5,22 @@ require 'helper'
 
 class TestImage < MagickTitle::TestCase
     
+  def identify_image(path)
+    Hash.create([ :width, :height, :size ], `identify -format '%w,%h,%b' #{path}`.split(",").map(&:to_i))
+  end
+    
   should "create an instance of MagickTitle::Image" do
     @title = MagickTitle::Image.create("created using class method")
   end
   
   should "set a title's line-height" do
     @title = MagickTitle::Image.create("Default\nLine\nHeight")
-    assert_equal 181, @title.identify[:height]
+    img = identify_image(@title.fullpath)
+    assert_equal img[:height], @title.identify[:height]
     
     @title2 = MagickTitle::Image.create("Default\nLine\nHeight", :line_height => -25)
-    assert_equal 131, @title2.identify[:height]
+    img2 = identify_image(@title2.fullpath)
+    assert_equal img2[:height], @title2.identify[:height]
   end
 
     
@@ -79,12 +85,13 @@ class TestImage < MagickTitle::TestCase
     end
     
     should "identify its dimensions and size" do
+      img = identify_image(@title.fullpath)
       hash = @title.identify
       assert_equal Hash, hash.class
       assert_equal 3, hash.values.length
-      assert_equal 155, hash[:width]
-      assert_equal 40, hash[:height]
-      assert_equal 2746, hash[:size]
+      assert_equal img[:width], hash[:width]
+      assert_equal img[:height], hash[:height]
+      assert_equal img[:size], hash[:size]
     end
     
     should "cache when asked to" do
