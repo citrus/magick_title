@@ -163,7 +163,7 @@ module MagickTitle
           -size #{options.width}x#{options.height}
           -weight #{options.weight}
           -kerning #{options.kerning}
-          caption:@-
+          caption:"#{options.caption}"
           #{file}
         ).split("\n")
         
